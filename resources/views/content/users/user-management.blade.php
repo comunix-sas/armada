@@ -64,7 +64,7 @@
             </div>
         </div>
         <!-- Users List Table -->
-        <h5 class="card-title mb-0">Filtro de Búsqueda</h5>
+        <h5 class="card-title mb-0">Creación de Usuarios</h5>
 
         <div class="card">
             <div class="card-header border-bottom">

@@ -24,7 +24,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::post('adquisitions/import', [PlanAdquisicionController::class, 'importExcel']);
   Route::post('adquisitions/validate-import', [PlanAdquisicionController::class, 'validateImport']);
 
-
   Route::get('roles', [AccessRoles::class, 'getRoles']);
   Route::get('roles/{id}', [AccessRoles::class, 'show']);
   Route::post('roles', [AccessRoles::class, 'store']);

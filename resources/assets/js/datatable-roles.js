@@ -18,11 +18,7 @@ $(function() {
                             Authorization: 'Bearer ' + localStorage.getItem('auth_token')
                         },
                         dataSrc: 'data',
-                        error: function(xhr, error, thrown) {
-                            if (xhr.status === 401) {
-                                window.location.href = '/login';
-                            }
-                        }
+
                     },
                     columns: [{
                             className: 'dt-control',

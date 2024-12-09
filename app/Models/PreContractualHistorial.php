@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class PreContractualHistorial extends Model
 {
+    protected $table = 'sgc_precontractual_historial';
+    protected $primaryKey = 'idHistorial';
+
     protected $fillable = [
-        'pre_contractual_id',
+        'precontractual_id',
         'tipo_cambio',
-        'estado_anterior',
         'estado_nuevo',
         'comentarios',
         'usuario_id',
@@ -18,6 +20,6 @@ class PreContractualHistorial extends Model
 
     public function preContractual()
     {
-        return $this->belongsTo(PreContractual::class);
+        return $this->belongsTo(PreContractual::class, 'precontractual_id', 'idPrecontractual');
     }
-} 
+}

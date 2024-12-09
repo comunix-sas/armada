@@ -4,20 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class PreContractual extends Model
 {
     use HasFactory;
 
-    protected $table = 'pre_contractuals';
+    protected $table = 'sgc_precontractual';
+    protected $primaryKey = 'idPrecontractual';
 
     protected $fillable = [
+        'plan_adquisicion_id',
         'titulo',
         'descripcion',
-        'estado',
-        'plan_adquisicion_id',
-        'estudio_previo',
-        'estado_estudio_previo', // pendiente, en_revision, aprobado, rechazado
+        'estudio_previo_path',
+        'estado_estudio_previo',
         'fecha_aprobacion_estudio',
         'requerimiento_inicio',
         'fecha_notificacion',
@@ -25,20 +26,41 @@ class PreContractual extends Model
         'secop_estado',
         'fecha_publicacion',
         'fecha_recepcion_ofertas',
-        'estado_proceso', // en_curso, adjudicado, cancelado, etc
+        'estado_proceso',
         'documento_adjudicacion',
         'created_by',
         'updated_by'
     ];
 
-    // Relaciones
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'fecha_aprobacion_estudio',
+        'fecha_notificacion',
+        'fecha_publicacion',
+        'fecha_recepcion_ofertas'
+    ];
+
     public function planAdquisicion()
     {
-        return $this->belongsTo(PlanAdquisicion::class);
+        return $this->belongsTo(PlanAdquisicion::class, 'plan_adquisicion_id', 'idPlan');
     }
 
-    public function historialCambios()
+    protected static function boot()
     {
-        return $this->hasMany(PreContractualHistorial::class);
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (Auth::check()) {
+                $model->created_by = Auth::user()->id;
+                $model->updated_by = Auth::user()->id;
+            }
+        });
+
+        static::updating(function ($model) {
+            if (Auth::check()) {
+                $model->updated_by = Auth::user()->id;
+            }
+        });
     }
 }

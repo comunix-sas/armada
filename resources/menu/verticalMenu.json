@@ -60,6 +60,12 @@
             "url": "/precontractual"
         },
         {
+            "name": "Validación Plan",
+            "icon": "menu-icon tf-icons ti ti-clipboard-check",
+            "slug": "validacion-plan",
+            "url": "/validacion-plan"
+        },
+        {
             "name": "Test Api SecopII",
             "icon": "menu-icon tf-icons ti ti-layout-grid",
             "slug": "test",

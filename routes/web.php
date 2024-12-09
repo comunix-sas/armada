@@ -160,6 +160,7 @@ use App\Http\Controllers\form_validation\PlanAdquisicionController;
 use App\Http\Controllers\precontractual\PreContractualController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\TestApiSecopIIController;
+use App\Http\Controllers\precontractual\ValidacionPlanController;
 
 
 
@@ -291,6 +292,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/iniciar-proceso/{id}', [PreContractualController::class, 'iniciarProcesoContratacion']);
     Route::get('/seguimiento/{id}', [PreContractualController::class, 'seguimientoProceso']);
     Route::get('/auditoria/{id}', [PreContractualController::class, 'auditoriaProcess']);
+    Route::get('/planes-validacion', [PreContractualController::class, 'obtenerPlanesValidacion']);
   });
 
   Route::get('/test', [TestApiSecopIIController::class, 'index']);
