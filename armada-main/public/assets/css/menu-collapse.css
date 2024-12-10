@@ -1,0 +1,32 @@
+.layout-menu-collapsed .menu-expanded-only {
+    display: none !important;
+}
+
+.layout-menu-collapsed .menu-collapsed-only {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.layout-menu-expanded .menu-collapsed-only {
+    display: none !important;
+}
+
+.layout-menu-expanded .menu-expanded-only {
+    display: block !important;
+}
+
+.layout-menu-collapsed .text-center {
+    padding: 1rem 0.5rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.layout-menu-collapsed.layout-menu-hover .menu-expanded-only {
+    display: block !important;
+}
+
+.layout-menu-collapsed.layout-menu-hover .menu-collapsed-only {
+    display: none !important;
+}
