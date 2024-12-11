@@ -63,12 +63,11 @@ export default defineConfig({
                 ...LibsJsFiles,
                 'resources/js/laravel-user-management.js', // Processing Laravel User Management CRUD JS File
                 'resources/js/planes-precontractual.js',
-
+                'resources/js/pages/auth/reset-password.js',
                 ...CoreScssFiles,
                 ...LibsScssFiles,
                 ...LibsCssFiles,
                 ...FontsScssFiles,
-                'resources/js/pages/auth/reset-password.js',
             ],
             refresh: true
         }),

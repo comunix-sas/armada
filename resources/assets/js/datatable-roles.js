@@ -4,7 +4,6 @@ $(function() {
             const dtUserTable = $('.datatables-user');
 
             if (dtUserTable.length) {
-                // Destruir la instancia existente si ya existe
                 if ($.fn.DataTable.isDataTable(dtUserTable)) {
                     dtUserTable.DataTable().destroy();
                 }
@@ -58,35 +57,43 @@ $(function() {
                     ],
                     dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex align-items-center justify-content-end"<"me-3"f><"dt-action-buttons"B>>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
                     buttons: [{
-                            text: '<i class="ti ti-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Agregar Rol</span>',
-                            className: 'btn btn-primary btn-sm',
-                            attr: {
-                                'data-bs-toggle': 'modal',
-                                'data-bs-target': '#addRoleModal'
-                            }
-                        }]
-                        // language: {
-                        //     url: '/js/i18n/es-ES.json'
-                        // }
+                        text: '<i class="ti ti-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Agregar Rol</span>',
+                        className: 'btn btn-primary btn-sm',
+                        attr: {
+                            'data-bs-toggle': 'modal',
+                            'data-bs-target': '#addRoleModal'
+                        }
+                    }],
+                    language: {
+                        url: '/js/i18n/es-ES.json',
+                        search: "Buscar:",
+                        lengthMenu: "Mostrar _MENU_ registros por página",
+                        zeroRecords: "No se encontraron resultados",
+                        info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                        infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                        infoFiltered: "(filtrado de _MAX_ registros totales)",
+                        paginate: {
+                            first: "Primero",
+                            last: "Último",
+                            next: "Siguiente",
+                            previous: "Anterior"
+                        }
+                    }
                 });
 
-                // Add event listener for opening and closing details
                 dtUserTable.on('click', 'td.dt-control', function() {
                     const tr = $(this).closest('tr');
                     const row = dtUser.row(tr);
 
                     if (row.child.isShown()) {
-                        // This row is already open - close it
                         row.child.hide();
                         tr.removeClass('shown');
                     } else {
-                        // Open this row
                         row.child(format(row.data())).show();
                         tr.addClass('shown');
                     }
                 });
 
-                // Function to format the row details
                 function format(d) {
                     return `<div class="row">
                         <div class="col-12">

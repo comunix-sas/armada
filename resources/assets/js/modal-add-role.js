@@ -9,21 +9,18 @@ document.addEventListener('DOMContentLoaded', function(e) {
     const permissionsContainer = document.getElementById('permissionsContainer');
     const selectAll = document.getElementById('selectAll');
 
-    // Cargar permisos al abrir el modal
     $('#addRoleModal').on('show.bs.modal', function() {
         loadPermissions();
-        // Resetear el formulario
         addRoleForm.reset();
         selectAll.checked = false;
     });
 
-    // Función para cargar permisos
     function loadPermissions() {
         $.ajax({
             url: '/api/permissions',
             type: 'GET',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('auth_token')
+                Authorization: 'Bearer ' + localStorage.getItem('auth_token')
             },
             success: function(response) {
                 permissionsContainer.innerHTML = '';
@@ -64,39 +61,34 @@ document.addEventListener('DOMContentLoaded', function(e) {
         });
     });
 
-    // Manejar envío del formulario
     addRoleForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Recolectar permisos seleccionados
         const selectedPermissions = [];
         document.querySelectorAll('.permission-check:checked').forEach(check => {
             selectedPermissions.push(check.value);
         });
 
-        // Verificar si al menos un permiso está seleccionado
         if (selectedPermissions.length === 0) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Debe seleccionar al menos un permiso para crear un rol.'
             });
-            return; // Detener el proceso si no hay permisos seleccionados
+            return;
         }
 
-        // Crear objeto de datos
         const formData = new FormData();
         formData.append('name', document.getElementById('modalRoleName').value);
         selectedPermissions.forEach(permission => {
             formData.append('permissions[]', permission);
         });
 
-        // Enviar solicitud
         $.ajax({
             url: '/api/roles',
             type: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('auth_token'),
+                Authorization: 'Bearer ' + localStorage.getItem('auth_token'),
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: formData,

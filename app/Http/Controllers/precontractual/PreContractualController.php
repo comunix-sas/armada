@@ -62,18 +62,18 @@ class PreContractualController extends Controller
         'notaAdicional' => 'required_if:estadoEstudio,rechazado'
       ]);
 
-      $estudioPrevioPath = $request->file('estudioPrevio')
-        ->store('estudios_previos', 'public');
-
       $planesCreados = [];
 
       foreach ($request->planes as $planId) {
+        $estudioPrevioPath = $request->file('estudioPrevio')
+          ->storeAs('estudios_previos', 'estudio_previo_' . $planId . '.' . $request->file('estudioPrevio')->getClientOriginalExtension(), 'public');
+
         $preContractual = PreContractual::create([
           'plan_adquisicion_id' => $planId,
           'titulo' => 'Estudio previo para plan ' . $planId,
           'estudio_previo_path' => $estudioPrevioPath,
-          'estado_estudio_previo' => $request->estadoEstudio,
-          'created_by' => Auth::user()->idUsuario,
+          'estado_estudio_previo' => 'pendiente',
+          'created_by' => Auth::user()->id,
           'estado_proceso' => 'en_curso'
         ]);
 

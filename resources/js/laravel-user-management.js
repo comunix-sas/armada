@@ -1,12 +1,6 @@
-/**
- * Page User List
- */
-
 'use strict';
 
-// Datatable (jquery)
 $(function() {
-    // Variable declaration for table
     var dt_user_table = $('.datatables-users'),
         select2 = $('.select2'),
         userView = baseUrl + 'app/user/view/account',
@@ -20,14 +14,12 @@ $(function() {
         });
     }
 
-    // ajax setup
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    // Users datatable
     if (dt_user_table.length) {
         var dt_user = dt_user_table.DataTable({
             processing: true,
@@ -144,9 +136,9 @@ $(function() {
                 '<"col-sm-12 col-md-6"i>' +
                 '<"col-sm-12 col-md-6"p>' +
                 '>',
-            lengthMenu: [7, 10, 20, 50, 70, 100], //for length of menu
+            lengthMenu: [10, 20, 50, 70, 100],
             language: {
-                sLengthMenu: '_MENU_',
+                sLengthMenu: 'Mostrar _MENU_ registros por página',
                 search: '',
                 searchPlaceholder: 'Buscar Usuario',
                 info: 'Mostrando _START_ a _END_ de _TOTAL_ entradas',
@@ -159,11 +151,11 @@ $(function() {
             buttons: [{
                     extend: 'collection',
                     className: 'btn btn-label-secondary dropdown-toggle mx-4 waves-effect waves-light',
-                    text: '<i class="ti ti-upload me-2 ti-xs"></i>Export',
+                    text: '<i class="ti ti-upload me-2 ti-xs"></i>Exportar',
                     buttons: [{
                             extend: 'print',
-                            title: 'Users',
-                            text: '<i class="ti ti-printer me-2" ></i>Print',
+                            title: 'Usuarios',
+                            text: '<i class="ti ti-printer me-2" ></i>Imprimir',
                             className: 'dropdown-item',
                             exportOptions: {
                                 columns: [1, 2, 3, 4, 5],
@@ -200,7 +192,7 @@ $(function() {
                         },
                         {
                             extend: 'csv',
-                            title: 'Users',
+                            title: 'Usuarios',
                             text: '<i class="ti ti-file-text me-2" ></i>Csv',
                             className: 'dropdown-item',
                             exportOptions: {
@@ -225,7 +217,7 @@ $(function() {
                         },
                         {
                             extend: 'excel',
-                            title: 'Users',
+                            title: 'Usuarios',
                             text: '<i class="ti ti-file-spreadsheet me-2"></i>Excel',
                             className: 'dropdown-item',
                             exportOptions: {
@@ -250,7 +242,7 @@ $(function() {
                         },
                         {
                             extend: 'pdf',
-                            title: 'Users',
+                            title: 'Usuarios',
                             text: '<i class="ti ti-file-code-2 me-2"></i>Pdf',
                             className: 'dropdown-item',
                             exportOptions: {
@@ -275,8 +267,8 @@ $(function() {
                         },
                         {
                             extend: 'copy',
-                            title: 'Users',
-                            text: '<i class="ti ti-copy me-2" ></i>Copy',
+                            title: 'Usuarios',
+                            text: '<i class="ti ti-copy me-2" ></i>Copiar',
                             className: 'dropdown-item',
                             exportOptions: {
                                 columns: [1, 2, 3, 4, 5],
@@ -301,7 +293,7 @@ $(function() {
                     ]
                 },
                 {
-                    text: '<i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Add New User</span>',
+                    text: '<i class="ti ti-plus me-0 me-sm-1 ti-xs"></i><span class="d-none d-sm-inline-block">Agregar Nuevo Usuario</span>',
                     className: 'add-new btn btn-primary waves-effect waves-light',
                     attr: {
                         'data-bs-toggle': 'offcanvas',
@@ -315,7 +307,7 @@ $(function() {
                     display: $.fn.dataTable.Responsive.display.modal({
                         header: function(row) {
                             var data = row.data();
-                            return 'Details of ' + data['name'];
+                            return 'Detalles de ' + data['name'];
                         }
                     }),
                     type: 'column',
@@ -449,17 +441,17 @@ $(function() {
             name: {
                 validators: {
                     notEmpty: {
-                        message: 'Please enter fullname'
+                        message: 'Por favor ingrese el nombre completo'
                     }
                 }
             },
             email: {
                 validators: {
                     notEmpty: {
-                        message: 'Please enter your email'
+                        message: 'Por favor ingrese su correo'
                     },
                     emailAddress: {
-                        message: 'The value is not a valid email address'
+                        message: 'El valor no es una dirección de correo válida'
                     }
                 }
             },
@@ -503,7 +495,7 @@ $(function() {
                 offCanvasForm.offcanvas('hide');
                 Swal.fire({
                     title: 'Entrada duplicada!',
-                    text: 'Tu correo debe ser único.',
+                    text: 'El correo debe ser único.',
                     icon: 'error',
                     customClass: {
                         confirmButton: 'btn btn-success'

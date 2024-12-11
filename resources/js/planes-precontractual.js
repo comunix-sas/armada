@@ -11,14 +11,13 @@ document.addEventListener('DOMContentLoaded', function () {
   planSelect.addEventListener('change', function () {
     if (this.selectedIndex > 0) {
       const selectedPlanText = this.options[this.selectedIndex].text;
-      const selectedPlanId = this.value;
-      console.log('Plan seleccionado:', selectedPlanId, selectedPlanText);
+      const selectedPlanId = this.options[this.selectedIndex].value;
+      console.log('Plan seleccionado:', selectedPlanText, 'ID:', selectedPlanId);
 
       if (isPlanAlreadyAdded(selectedPlanText)) {
         const alertHtml = `
           <div class="alert alert-warning alert-dismissible fade show" role="alert">
             El plan "${selectedPlanText}" ya ha sido agregado
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
         `;
         const alertElement = document.createElement('div');
