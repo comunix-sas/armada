@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class PreContractualController extends Controller
 {
@@ -37,74 +39,52 @@ class PreContractualController extends Controller
     }
   }
 
-  public function actualizarEstudioPrevio(Request $request, $id)
-  {
-    try {
-      $preContractual = PreContractual::findOrFail($id);
-      $preContractual->update([
-        'estudio_previo' => $request->estudio_previo,
-        'estado_estudio_previo' => $request->estado
-      ]);
-
-      return response()->json(['message' => 'Estudio previo actualizado']);
-    } catch (ModelNotFoundException $e) {
-      return response()->json([
-        'message' => 'Precontractual no encontrado'
-      ], 404);
-    }
-  }
-
   public function store(Request $request)
   {
     try {
       $request->validate([
-        'planes' => 'required|array',
-        'planes.*' => 'exists:sgc_plan_adquisicion,idPlan',
+        'planes' => 'required|exists:sgc_plan_adquisicion,idPlan',
         'estudioPrevio' => 'required|file|mimes:pdf,doc,docx,xlsx,xls',
         'estadoEstudio' => 'required|in:pendiente,en_revision,aprobado,rechazado',
         'notaAdicional' => 'required_if:estadoEstudio,rechazado'
       ]);
 
-      $estudioPrevioPath = $request->file('estudioPrevio')
-        ->store('estudios_previos', 'public');
-
       $planesCreados = [];
 
       foreach ($request->planes as $planId) {
+        $estudioPrevioPath = $request->file('estudioPrevio')
+          ->storeAs('estudios_previos', 'estudio_previo_' . $planId . '.' . $request->file('estudioPrevio')->getClientOriginalExtension(), 'public');
+
         $preContractual = PreContractual::create([
           'plan_adquisicion_id' => $planId,
           'titulo' => 'Estudio previo para plan ' . $planId,
           'estudio_previo_path' => $estudioPrevioPath,
-          'estado_estudio_previo' => $request->estadoEstudio,
-          'created_by' => Auth::user()->idUsuario,
+          'estado_estudio_previo' => 'pendiente',
+          'created_by' => Auth::user()->id,
           'estado_proceso' => 'en_curso'
         ]);
 
         $planesCreados[] = $preContractual->idPrecontractual;
       }
 
-      return response()->json([
-        'success' => true,
-        'message' => 'Planes precontractuales registrados exitosamente',
-        'planes' => $planesCreados
-      ]);
+      return redirect()->back()->with('success', 'Planes precontractuales registrados exitosamente.');
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      return redirect()->back()->withErrors($e->errors())->withInput();
     } catch (\Exception $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Error al registrar los planes precontractuales',
-        'error' => $e->getMessage()
-      ], 500);
+      Log::error('Error al registrar los planes precontractuales: ' . $e->getMessage());
+      return redirect()->back()->with('error', 'Error al registrar los planes precontractuales: ' . $e->getMessage());
     }
   }
-
   public function update(Request $request, $id)
   {
+  
     try {
         // Validación inicial
         $request->validate([
             'estadoEstudio' => 'required|in:pendiente,en_revision,aprobado,rechazado',
             'estudioPrevio' => 'nullable|file|mimes:pdf,doc,docx,xlsx,xls',
-            'notaAdicional' => 'required_if:estadoEstudio,rechazado'
+            'nota_adicional' => 'required_if:estadoEstudio,rechazado'
         ]);
 
         if (!Auth::check()) {
@@ -122,15 +102,12 @@ class PreContractualController extends Controller
 
         // Manejar el archivo si se proporciona uno nuevo
         if ($request->hasFile('estudioPrevio')) {
-            // Eliminar archivo anterior
-            if ($documentoUrl) {
-                Storage::disk('public')->delete($documentoUrl);
+            $estudiosPreviosPaths = json_decode($preContractual->estudio_previo_path, true) ?? [];
+            foreach ($request->file('estudioPrevio') as $file) {
+                // Eliminar archivos anteriores si es necesario y agregar nuevos
+                $estudiosPreviosPaths[] = $file->store('estudios_previos', 'public');
             }
-            
-            $documentoUrl = $request->file('estudioPrevio')
-                ->store('estudios_previos', 'public');
-            
-            $preContractual->estudio_previo_path = $documentoUrl;
+            $preContractual->estudio_previo_path = json_encode($estudiosPreviosPaths);
         }
 
         // Actualizar el precontractual
@@ -141,10 +118,10 @@ class PreContractualController extends Controller
         // Registrar en el historial
         PreContractualHistorial::create([
             'precontractual_id' => $id,
-            'tipo_cambio' => $request->hasFile('estudioPrevio') ? 'documento_y_estado' : 'estado',
             'estado_anterior' => $estadoAnterior,
             'estado_nuevo' => $request->estadoEstudio,
-            'comentarios' => $request->estadoEstudio === 'rechazado' ? $request->notaAdicional : null,
+            'tipo_cambio' => $request->tipo_cambio,
+            'comentarios' => $request->estadoEstudio === 'rechazado' ? $request->nota_adicional : null,
             'usuario_id' => Auth::id(),
             'fecha_cambio' => now()
         ]);
@@ -250,7 +227,7 @@ class PreContractualController extends Controller
             'estado_nuevo' => $registro->estado_nuevo,
             'comentarios' => $registro->comentarios,
             'usuario' => $registro->usuario ? $registro->usuario->name : 'Usuario no disponible',
-            'fecha_cambio' => $registro->fecha_cambio->format('Y-m-d H:i:s')
+            'fecha_cambio' => Carbon::parse($registro->fecha_cambio)->format('Y-m-d H:i:s')
           ];
         })
       ];
@@ -264,6 +241,53 @@ class PreContractualController extends Controller
         'success' => false,
         'message' => $e->getMessage()
       ], 500);
+    }
+  }
+
+  public function destroy($id)
+  {
+    try {
+        DB::beginTransaction();
+        
+        $preContractual = PreContractual::findOrFail($id);
+        
+        // Eliminar el archivo físico si existe
+        if ($preContractual->estudio_previo_path) {
+            Storage::disk('public')->delete($preContractual->estudio_previo_path);
+        }
+        
+        // Registrar en el historial
+        PreContractualHistorial::create([
+            'precontractual_id' => $id,
+            'estado_anterior' => $preContractual->estado_estudio_previo,
+            'estado_nuevo' => 'eliminado',
+            'comentarios' => 'Plan eliminado del sistema',
+            'usuario_id' => Auth::id(),
+            'fecha_cambio' => now()
+        ]);
+        
+        // Eliminar el registro
+        $preContractual->delete();
+        
+        DB::commit();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Plan eliminado correctamente'
+        ]);
+        
+    } catch (ModelNotFoundException $e) {
+        DB::rollBack();
+        return response()->json([
+            'success' => false,
+            'message' => 'Plan no encontrado'
+        ], 404);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al eliminar el plan: ' . $e->getMessage()
+        ], 500);
     }
   }
 }

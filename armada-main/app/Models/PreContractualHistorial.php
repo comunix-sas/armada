@@ -8,15 +8,7 @@ class PreContractualHistorial extends Model
 {
     protected $table = 'sgc_precontractual_historial';
     
-    protected $fillable = [
-        'precontractual_id',
-        'tipo_cambio',
-        'estado_anterior',
-        'estado_nuevo',
-        'comentarios',
-        'usuario_id',
-        'fecha_cambio'
-    ];
+    protected $guarded = [];
 
     /**
      * Obtiene el usuario que realizó el cambio

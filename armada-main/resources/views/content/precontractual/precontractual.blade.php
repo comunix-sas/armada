@@ -11,119 +11,10 @@
 @endsection
 
 @section('page-script')
-    @vite(['resources/js/planes-precontractual.js'])
-    <script>
-        // Definir cargarDatosPlan en el scope global
-        window.cargarDatosPlan = function(id) {
-            console.log('Cargando datos del plan:', id);
-            
-            fetch(`/precontractual/planes-validacion-id/${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Datos recibidos:', data);
-                    
-                    if (data.success) {
-                        const plan = data.data;
-                        
-                        // Actualizar campos del formulario
-                        document.getElementById('nombrePlan').value = plan.nombrePlan;
-                        document.getElementById('estadoEstudio').value = plan.estado;
-                        
-                        // Mostrar documento actual
-                        const docContainer = document.getElementById('documentoActual');
-                        docContainer.innerHTML = plan.documentoUrl ? 
-                            `<a href="${plan.documentoUrl}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                Ver documento actual
-                            </a>` : 
-                            '<p class="text-muted">Sin documento</p>';
-                        
-                        // Actualizar historial
-                        const historialBody = document.getElementById('historialCambios');
-                        historialBody.innerHTML = plan.historial && plan.historial.length ? 
-                            plan.historial.map(h => `
-                                <tr>
-                                    <td>${h.fecha_cambio || '-'}</td>
-                                    <td>${h.estado_nuevo || '-'}</td>
-                                    <td>${h.usuario || '-'}</td>
-                                    <td>${h.comentarios || '-'}</td>
-                                </tr>
-                            `).join('') :
-                            '<tr><td colspan="4" class="text-center">No hay historial disponible</td></tr>';
-                        
-                        // Actualizar action del formulario
-                        document.getElementById('editarPlanForm').setAttribute('action', `/precontractual/${id}`);
-                        
-                        // Abrir el modal usando Bootstrap
-                        const modalElement = document.getElementById('editarPlanModal');
-                        const modal = new bootstrap.Modal(modalElement);
-                        modal.show();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error al cargar los datos del plan');
-                });
-        };
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const estadoEstudio = document.getElementById('estadoEstudio');
-            const notaAdicionalContainer = document.getElementById('notaAdicionalContainer');
-            const notaAdicional = document.getElementById('notaAdicional');
-
-            estadoEstudio.addEventListener('change', function() {
-                if (estadoEstudio.value === 'rechazado') {
-                    notaAdicionalContainer.style.display = 'block';
-                    notaAdicional.setAttribute('required', 'required');
-                } else {
-                    notaAdicionalContainer.style.display = 'none';
-                    notaAdicional.removeAttribute('required');
-                }
-            });
-
-            // Cargar tabla de validación
-            function cargarTablaValidacion() {
-                fetch('/precontractual/planes-validacion')
-                    .then(response => response.json())
-                    .then(data => {
-                        const tbody = document.querySelector('#validacionPlanesTable tbody');
-                        tbody.innerHTML = '';
-
-                        data.data.forEach(plan => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${plan.nombrePlan}</td>
-                                <td><span class="badge bg-${getEstadoClass(plan.estado)}">${plan.estado}</span></td>
-                                <td>${plan.fechaInicio}</td>
-                                <td>${plan.ultimaActualizacion}</td>
-                                <td>
-                                    <a href="${plan.documentoUrl}" class="btn btn-sm btn-info">
-                                        <i class="ti ti-file-download"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary" onclick="cargarDatosPlan(${plan.id})">
-                                        <i class="ti ti-eye"></i>
-                                    </button>
-                                </td>
-                            `;
-                            tbody.appendChild(tr);
-                        });
-                    });
-            }
-
-            function getEstadoClass(estado) {
-                const classes = {
-                    'pendiente': 'warning',
-                    'en_revision': 'info',
-                    'aprobado': 'success',
-                    'rechazado': 'danger'
-                };
-                return classes[estado] || 'secondary';
-            }
-            cargarTablaValidacion();
-        });
-    </script>
+    @vite(['resources/assets/js/precontractual.js'])
 @endsection
+
+@include('content.precontractual.modal')
 
 @section('content')
     @role('Administrador')
@@ -131,6 +22,31 @@
             <div class="card-header">
                 <h5 class="mb-0">Gestión Pre-Contractual</h5>
             </div>
+
+            <!-- Display success message -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Display error message -->
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <!-- Display validation errors -->
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <!-- Navegación de pestañas -->
             <ul class="nav nav-tabs nav-fill" role="tablist">
@@ -165,8 +81,8 @@
                                         <div class="row mb-3">
                                             <div class="col-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="plan">Seleccionar Plan</label>
-                                                    <select class="form-control" id="plan" name="plan">
+                                                    <label class="form-label" for="planes">Seleccionar Plan</label>
+                                                    <select class="form-control" id="plan" name="planes[]">
                                                         <option value="" disabled selected>Seleccione un plan</option>
                                                         @foreach ($planes as $plan)
                                                             <option value="{{ $plan->idPlan }}">{{ $plan->nombrePlan }}</option>
@@ -185,11 +101,11 @@
                                             <h6>Estudio Previo</h6>
                                             <div class="mb-3">
                                                 <label class="form-label">Documento Estudio Previo</label>
-                                                <input type="file" class="form-control" id="estudioPrevio" />
+                                                <input type="file" class="form-control" id="estudioPrevio" name="estudioPrevio"/>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Estado</label>
-                                                <select class="form-control" id="estadoEstudio">
+                                                <select class="form-control" id="estadoEstudio" name="estadoEstudio">
                                                     <option value="pendiente">Pendiente</option>
 
                                                 </select>
@@ -216,6 +132,9 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
+                                    <div class="mb-3">
+                                        <input type="text" id="searchField" class="form-control" placeholder="Buscar por nombre del plan..." oninput="cargarTablaValidacion()">
+                                    </div>
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="validacionPlanesTable">
                                             <thead>
@@ -242,7 +161,7 @@
         </div>
 
         <!-- Mantener los modales existentes -->
-        @include('content.precontractual.modal')
+
     @else
         <div class="alert alert-danger" role="alert">
             No tienes permisos para acceder a esta página.

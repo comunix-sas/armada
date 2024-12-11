@@ -15,8 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('plan_adquisicion_id');
             $table->foreign('plan_adquisicion_id')
                   ->references('idPlan')
-                  ->on('sgc_plan_adquisicion')
-                  ->onDelete('cascade');
+                  ->on('sgc_plan_adquisicion');
 
             // Campos para estudios previos
             $table->string('titulo');
