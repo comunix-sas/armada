@@ -1,6 +1,8 @@
 {
-    "menu": [{
-            "menuHeader": "Inicio"
+    "menu": [
+        {
+            "menuHeader": "Inicio",
+            "disabled": false
         },
         {
             "name": "Dashboards",
@@ -8,76 +10,83 @@
             "slug": "dashboard"
         },
         {
-            "menuHeader": "Modulo Administrador"
+            "menuHeader": "Modulo Administrador",
+            "disabled": false
         },
         {
-            "name": "Gestión de usuarios",
+            "name": "Gesti\u00f3n de usuarios",
             "icon": "menu-icon tf-icons ti ti-settings",
             "slug": "users",
-            "submenu": [{
-                    "url": "laravel/user-management",
+            "disabled": false,
+            "submenu": [
+                {
+                    "url": "laravel\/user-management",
                     "name": "Crear usuario",
                     "slug": "users-user-management"
                 },
                 {
-                    "url": "app/access-roles",
+                    "url": "app\/access-roles",
                     "name": "Roles",
                     "slug": "app-access-roles"
                 },
                 {
-                    "url": "app/access-permission",
+                    "url": "app\/access-permission",
                     "name": "Permission",
                     "slug": "app-access-permission"
+                },
+                {
+                    "url": "admin\/module-management",
+                    "name": "Gesti\u00f3n de M\u00f3dulos",
+                    "slug": "admin-module-management"
                 }
             ]
         },
         {
-            "menuHeader": "Módulo de Planeación"
+            "menuHeader": "M\u00f3dulo de Planeaci\u00f3n",
+            "disabled": false
         },
         {
-            "name": "Plan Anual Aquisición",
+            "name": "Plan Anual Aquisici\u00f3n",
             "icon": "menu-icon tf-icons ti ti-checkbox",
             "slug": "plan-anual",
-            "submenu": [{
-                    "url": "form/validation",
+            "submenu": [
+                {
+                    "url": "form\/validation",
                     "name": "Crear Plan",
                     "slug": "form-validation"
                 },
                 {
-                    "url": "tables/datatables-advanced",
+                    "url": "tables\/datatables-advanced",
                     "name": "Planes Creados",
-                    "slug": "tables/datatables-advanced"
+                    "slug": "tables\/datatables-advanced"
                 }
             ]
         },
         {
-            "menuHeader": "Módulo de Precontractual"
+            "menuHeader": "M\u00f3dulo de Precontractual",
+            "disabled": false
         },
         {
             "name": "Pre-Contractual",
             "icon": "menu-icon tf-icons ti ti-layout-grid",
             "slug": "precontractual",
-            "url": "/precontractual"
-        },
-        {
-            "name": "Validación Plan",
-            "icon": "menu-icon tf-icons ti ti-clipboard-check",
-            "slug": "validacion-plan",
-            "url": "/validacion-plan"
+            "url": "\/precontractual"
         },
         {
             "name": "Test Api SecopII",
             "icon": "menu-icon tf-icons ti ti-layout-grid",
             "slug": "test",
-            "url": "/test"
+            "url": "\/test",
+            "disabled": false
         },
         {
-            "menuHeader": "Módulo de Contractual"
+            "menuHeader": "M\u00f3dulo de Contractual"
         },
         {
             "name": "Contractual",
             "icon": "menu-icon tf-icons ti ti-layout-grid",
-            "slug": "contractual"
+            "slug": "contractual",
+            "disabled": false
         }
     ]
 }

@@ -5,7 +5,6 @@ $(function() {
 
     if (dataTablePermissions.length) {
 
-        // Destruir la instancia existente si ya existe
         if ($.fn.DataTable.isDataTable(dataTablePermissions)) {
             dataTablePermissions.DataTable().destroy();
         }
@@ -58,6 +57,21 @@ $(function() {
                 [1, 'asc']
             ],
             dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex align-items-center justify-content-end"<"me-3"f><"dt-action-buttons"B>>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+            language: {
+                lengthMenu: "Mostrar _MENU_ registros por página",
+                zeroRecords: "No se encontraron resultados",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                infoEmpty: "Mostrando 0 a 0 de 0 registros",
+                infoFiltered: "(filtrado de _MAX_ registros totales)",
+                search: "Buscar:",
+                paginate: {
+                    first: "Primero",
+                    last: "Último",
+                    next: "Siguiente",
+                    previous: "Anterior"
+                },
+                processing: "Procesando...",
+            },
             buttons: [{
                 text: '<i class="ti ti-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Agregar Permiso</span>',
                 className: 'btn btn-primary btn-sm',
@@ -67,12 +81,8 @@ $(function() {
                     modal.show();
                 }
             }],
-            // language: {
-            //     url: '/js/i18n/es-ES.json'
-            // }
         });
 
-        // Add event listener for opening and closing details
         dataTablePermissions.on('click', 'td.dt-control', function() {
             const tr = $(this).closest('tr');
             const row = dt_permission.row(tr);
@@ -86,7 +96,6 @@ $(function() {
             }
         });
 
-        // Function to format the row details
         function format(d) {
             return `<div class="row">
                 <div class="col-12">

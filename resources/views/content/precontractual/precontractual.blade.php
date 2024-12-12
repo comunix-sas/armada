@@ -68,8 +68,6 @@
                 };
                 return classes[estado] || 'secondary';
             }
-
-            // Cargar tabla al iniciar
             cargarTablaValidacion();
         });
     </script>
@@ -126,7 +124,7 @@
                                                     <select class="form-control" id="plan" name="plan">
                                                         <option value="" disabled selected>Seleccione un plan</option>
                                                         @foreach ($planes as $plan)
-                                                            <option value="{{ $plan->id }}">{{ $plan->nombrePlan }}</option>
+                                                            <option value="{{ $plan->idPlan }}">{{ $plan->nombrePlan }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -148,9 +146,7 @@
                                                 <label class="form-label">Estado</label>
                                                 <select class="form-control" id="estadoEstudio">
                                                     <option value="pendiente">Pendiente</option>
-                                                    <option value="en_revision">En Revisión</option>
-                                                    <option value="aprobado">Aprobado</option>
-                                                    <option value="rechazado">Rechazado</option>
+     
                                                 </select>
                                             </div>
                                             <div class="mb-3" id="notaAdicionalContainer" style="display: none;">
@@ -159,14 +155,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Secci��n de seguimiento -->
-                                        <div class="mt-4">
-                                            <h6>Seguimiento del Proceso</h6>
-                                            <div class="timeline">
-                                            </div>
-                                        </div>
-
-                                        <!-- Botón de registrar al final de todo -->
                                         <div class="mt-4 text-end">
                                             <button type="submit" class="btn btn-primary">Registrar</button>
                                         </div>
