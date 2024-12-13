@@ -257,12 +257,13 @@
 
             historial.forEach(registro => {
                 const tr = document.createElement('tr');
+                const comentarioFormateado = registro.comentarios ? registro.comentarios : '-';
                 tr.innerHTML = `
-                <td>${registro.fecha_cambio}</td>
-                <td class="${getEstadoClass(registro.estado_nuevo)}">${formatearEstado(registro.estado_nuevo)}</td>
-                <td>${registro.usuario}</td>
-                <td>${registro.comentarios || '-'}</td>
-            `;
+                    <td>${registro.fecha_cambio}</td>
+                    <td class="${getEstadoClass(registro.estado_nuevo)}">${formatearEstado(registro.estado_nuevo)}</td>
+                    <td>${registro.usuario}</td>
+                    <td>${comentarioFormateado}</td>
+                `;
                 tbody.appendChild(tr);
             });
         }

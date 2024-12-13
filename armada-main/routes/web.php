@@ -298,8 +298,9 @@ Route::middleware(['auth'])->group(function () {
 
   });
 
-  Route::get('/test', [TestApiSecopIIController::class, 'index']);
-
+  Route::get('/test', [App\Http\Controllers\TestApiSecopIIController::class, 'index'])->name('test');
+  Route::get('/secop', [App\Http\Controllers\TestApiSecopIIController::class, 'getSecopData'])->name('secop.data');
+  
   Route::post('/send-reset-password', [LoginCover::class, 'sendPasswordResetEmail']);
   Route::post('/reset-password', [LoginCover::class, 'resetPassword']);
 
