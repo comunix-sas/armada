@@ -65,7 +65,6 @@ $(function() {
                         }
                     }],
                     language: {
-                        url: '/js/i18n/es-ES.json',
                         search: "Buscar:",
                         lengthMenu: "Mostrar _MENU_ registros por página",
                         zeroRecords: "No se encontraron resultados",
@@ -169,42 +168,57 @@ $(function() {
         });
     });
 
-    $(document).on('click', '.edit-permission', function () {
-      const id = $(this).data('id');
-      $.ajax({
-        url: baseUrl + `api/roles/${id}`,
-        type: 'GET',
-        success: function (response) {
-          if (response.status === 'success') {
-            const roleName = response.data.name;
-            const permissions = response.data.permissions;
+    $(document).on('click', '.edit-permission', function() {
+        const id = $(this).data('id');
+        $.ajax({
+            url: baseUrl + `api/roles/${id}`,
+            type: 'GET',
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('auth_token')
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    const roleName = response.data.name;
+                    const permissions = response.data.permissions;
 
-            $('#roleName').val(roleName);
+                    $('#roleName').val(roleName);
 
-            $('#permissionsModalBody').html(
-              permissions
-                .map(
-                  permission => `
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="${permission.name}" id="perm-${permission.id}" ${permission.assigned ? 'checked' : ''}>
-                  <label class="form-check-label" for="perm-${permission.id}">
-                    ${permission.name}
-                  </label>
-                </div>
-              `
-                )
-                .join('')
-            );
+                    // Organizamos los permisos en columnas
+                    let permissionsHtml = '<div class="row">';
+                    permissions.forEach((permission, index) => {
+                        if (index % 3 === 0) {
+                            permissionsHtml += '</div><div class="row">';
+                        }
+                        permissionsHtml += `
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           value="${permission.name}"
+                                           id="perm-${permission.id}"
+                                           ${permission.assigned ? 'checked' : ''}>
+                                    <label class="form-check-label" for="perm-${permission.id}">
+                                        ${permission.name}
+                                    </label>
+                                </div>
+                            </div>`;
+                    });
+                    permissionsHtml += '</div>';
 
-            $('#roleId').val(id);
-
-            $('#permissionsModal').modal('show');
-          }
-        },
-        error: function (xhr) {
-          console.error('Error al obtener los datos del rol:', xhr.responseText);
-        }
-      });
+                    $('#permissionsModalBody').html(permissionsHtml);
+                    $('#roleId').val(id);
+                    $('#permissionsModal').modal('show');
+                }
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error al obtener los datos del rol'
+                });
+                console.error('Error al obtener los datos del rol:', xhr.responseText);
+            }
+        });
     });
 
     $('#permissionsModal').on('hidden.bs.modal', function () {
@@ -212,42 +226,70 @@ $(function() {
       $('#editRoleForm')[0].reset();
     });
 
-    $('#saveRoleChanges').on('click', function () {
-      const id = $('#roleId').val();
-      const updatedName = $('#roleName').val();
-      const updatedPermissions = [];
+    $('#saveRoleChanges').on('click', function() {
+        const id = $('#roleId').val();
+        const updatedName = $('#roleName').val();
+        const updatedPermissions = [];
 
-      $('#permissionsModalBody input[type="checkbox"]').each(function () {
-        if ($(this).is(':checked')) {
-          updatedPermissions.push($(this).val());
-        }
-      });
+        $('#permissionsModalBody input[type="checkbox"]:checked').each(function() {
+            updatedPermissions.push($(this).val());
+        });
 
-      $.ajax({
-        url: baseUrl + `api/roles/${id}`,
-        type: 'PUT',
-        data: {
-          name: updatedName,
-          permissions: updatedPermissions
-        },
-        success: function (response) {
-          if (response.status === 'success') {
+        if (updatedPermissions.length === 0) {
             Swal.fire({
-              icon: 'success',
-              title: 'Éxito',
-              text: 'Rol actualizado correctamente',
-              showConfirmButton: false,
-              timer: 1500
+                icon: 'error',
+                title: 'Error',
+                text: 'Debe seleccionar al menos un permiso para actualizar el rol.'
             });
-            $('#permissionsModal').modal('hide');
-            dtUser.ajax.reload();
-          }
-        },
-        error: function (xhr) {
-          console.error('Error al actualizar el rol:', xhr.responseText);
+            return;
         }
-      });
+
+        saveRoleChanges(id, updatedName, updatedPermissions);
     });
+
+    function saveRoleChanges(id, updatedName, updatedPermissions) {
+        $.ajax({
+            url: baseUrl + `api/roles/${id}`,
+            type: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('auth_token')
+            },
+            data: {
+                name: updatedName,
+                permissions: updatedPermissions
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: 'Rol actualizado correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        $('#permissionsModal').modal('hide');
+                        if ($.fn.DataTable.isDataTable('.datatables-user')) {
+                            $('.datatables-user').DataTable().ajax.reload(null, false);
+                        }
+                    });
+                }
+            },
+            error: function(xhr) {
+                console.error('Error completo:', xhr);
+
+                let errorMessage = 'Ocurrió un error al actualizar el rol';
+                if (xhr.responseJSON && xhr.responseJSON.errors && xhr.responseJSON.errors.name) {
+                    errorMessage = xhr.responseJSON.errors.name[0];
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage
+                });
+            }
+        });
+    }
 
     $('#savePermissions').on('click', function () {
       const id = $('#editRoleModal #roleId').val();

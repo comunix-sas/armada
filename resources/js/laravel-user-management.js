@@ -9,7 +9,7 @@ $(function() {
     if (select2.length) {
         var $this = select2;
         $this.wrap('<div class="position-relative"></div>').select2({
-            placeholder: 'Select Country',
+            placeholder: 'Seleccionar Rol',
             dropdownParent: $this.parent()
         });
     }
@@ -409,20 +409,44 @@ $(function() {
         }
 
         // changing the title of offcanvas
-        $('#offcanvasAddUserLabel').html('Edit User');
+        $('#offcanvasAddUserLabel').html('Editar Usuario');
 
         // get data
         $.get(`${baseUrl}user-list\/${user_id}\/edit`, function(data) {
             $('#user_id').val(data.id);
             $('#add-user-fullname').val(data.name);
             $('#add-user-email').val(data.email);
+
+            // Reiniciar el select2 antes de establecer el nuevo valor
+            $('#user-role').empty();
+
+            // Cargar todos los roles disponibles
+            $.get(`${baseUrl}api/roles`, function(rolesResponse) {
+                // Agregar todas las opciones al select
+                rolesResponse.data.forEach(function(role) {
+                    var option = new Option(role.name, role.id, false, role.id == data.role_id);
+                    $('#user-role').append(option);
+                });
+
+                // Establecer el rol actual
+                $('#user-role')
+                    .val(data.role_id)
+                    .trigger('change');
+            });
         });
     });
 
-    // changing the title
+    // Limpiar el formulario al cerrar
+    offCanvasForm.on('hidden.bs.offcanvas', function() {
+        fv.resetForm(true);
+        $('#user-role').val(null).trigger('change');
+    });
+
+    // Reiniciar el formulario al agregar nuevo
     $('.add-new').on('click', function() {
-        $('#user_id').val(''); //reseting input field
-        $('#offcanvasAddUserLabel').html('Add User');
+        $('#user_id').val('');
+        $('#offcanvasAddUserLabel').html('Agregar Usuario');
+        $('#user-role').val(null).trigger('change');
     });
 
     // Filter form control to default size

@@ -2,6 +2,9 @@ document.querySelectorAll('.toggle-module').forEach(toggle => {
     toggle.addEventListener('change', function() {
         const moduleName = this.dataset.module;
         const disabled = !this.checked;
+        const toggleElement = this;
+
+        toggleElement.disabled = true;
 
         fetch('/admin/module-management/toggle', {
                 method: 'POST',
@@ -17,13 +20,31 @@ document.querySelectorAll('.toggle-module').forEach(toggle => {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Recargar la página para ver los cambios
-                    window.location.reload();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: 'Estado del módulo actualizado correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    throw new Error(data.message || 'Error al actualizar el módulo');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                this.checked = !this.checked; // Revertir el cambio en caso de error
+                toggleElement.checked = !toggleElement.checked;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.message || 'Error al actualizar el estado del módulo',
+                    showConfirmButton: true
+                });
+            })
+            .finally(() => {
+                toggleElement.disabled = false;
             });
     });
 });

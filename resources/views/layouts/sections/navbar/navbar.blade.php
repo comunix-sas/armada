@@ -7,7 +7,12 @@ $navbarDetached = ($navbarDetached ?? '');
 
 <!-- Navbar -->
 @if(isset($navbarDetached) && $navbarDetached == 'navbar-detached')
-<nav class="layout-navbar {{$containerNav}} navbar navbar-expand-xl {{$navbarDetached}} align-items-center bg-navbar-theme" id="layout-navbar">
+<nav class="layout-navbar {{$containerNav}} navbar navbar-expand-xl {{$navbarDetached}} align-items-center bg-navbar-theme"
+     style="    url('{{ asset("assets/img/navbar-bg.jpg") }}') !important;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;"
+     id="layout-navbar">
   @endif
   @if(isset($navbarDetached) && $navbarDetached == '')
   <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
@@ -40,59 +45,7 @@ $navbarDetached = ($navbarDetached ?? '');
 
       <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
-        @if(!isset($menuHorizontal))
-        <!-- Search -->
-        <div class="navbar-nav align-items-center">
-          <div class="nav-item navbar-search-wrapper mb-0">
-            <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-              <i class="ti ti-search ti-md me-2 me-lg-4 ti-lg"></i>
-              <span class="d-none d-md-inline-block text-muted fw-normal">Search (Ctrl+/)</span>
-            </a>
-          </div>
-        </div>
-        <!-- /Search -->
-        @endif
-
        <ul class="navbar-nav flex-row align-items-center ms-auto">
-          {{-- @if(isset($menuHorizontal))
-            <!-- Search -->
-            <li class="nav-item navbar-search-wrapper">
-              <a class="nav-link btn btn-text-secondary btn-icon rounded-pill search-toggler" href="javascript:void(0);">
-                <i class="ti ti-search ti-md"></i>
-              </a>
-            </li>
-            <!-- /Search -->
-          @endif --}}
-
-          <!-- Language -->
-          {{-- <li class="nav-item dropdown-language dropdown">
-            <a class="nav-link btn btn-text-secondary btn-icon rounded-pill dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-              <i class='ti ti-language rounded-circle ti-md'></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li>
-                <a class="dropdown-item {{ app()->getLocale() === 'en' ? 'active' : '' }}" href="{{url('lang/en')}}" data-language="en" data-text-direction="ltr">
-                  <span>English</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item {{ app()->getLocale() === 'fr' ? 'active' : '' }}" href="{{url('lang/fr')}}" data-language="fr" data-text-direction="ltr">
-                  <span>French</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item {{ app()->getLocale() === 'ar' ? 'active' : '' }}" href="{{url('lang/ar')}}" data-language="ar" data-text-direction="rtl">
-                  <span>Arabic</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item {{ app()->getLocale() === 'de' ? 'active' : '' }}" href="{{url('lang/de')}}" data-language="de" data-text-direction="ltr">
-                  <span>German</span>
-                </a>
-              </li>
-            </ul>
-          </li> --}}
-          <!--/ Language -->
 
           @if($configData['hasCustomizer'] == true)
             <!-- Style Switcher -->
@@ -103,105 +56,23 @@ $navbarDetached = ($navbarDetached ?? '');
               <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
                 <li>
                   <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
-                    <span class="align-middle"><i class='ti ti-sun ti-md me-3'></i>Light</span>
+                    <span class="align-middle"><i class='ti ti-sun ti-md me-3'></i>Luz</span>
                   </a>
                 </li>
                 <li>
                   <a class="dropdown-item" href="javascript:void(0);" data-theme="dark">
-                    <span class="align-middle"><i class="ti ti-moon-stars ti-md me-3"></i>Dark</span>
+                    <span class="align-middle"><i class="ti ti-moon-stars ti-md me-3"></i>Noche</span>
                   </a>
                 </li>
                 <li>
                   <a class="dropdown-item" href="javascript:void(0);" data-theme="system">
-                    <span class="align-middle"><i class="ti ti-device-desktop-analytics ti-md me-3"></i>System</span>
+                    <span class="align-middle"><i class="ti ti-device-desktop-analytics ti-md me-3"></i>Sistema</span>
                   </a>
                 </li>
               </ul>
             </li>
             <!-- / Style Switcher -->
           @endif
-
-          <!-- Quick links  -->
-          {{-- <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown">
-            <a class="nav-link btn btn-text-secondary btn-icon rounded-pill btn-icon dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-              <i class='ti ti-layout-grid-add ti-md'></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-end p-0">
-              <div class="dropdown-menu-header border-bottom">
-                <div class="dropdown-header d-flex align-items-center py-3">
-                  <h6 class="mb-0 me-auto">Shortcuts</h6>
-                  <a href="javascript:void(0)" class="btn btn-text-secondary rounded-pill btn-icon dropdown-shortcuts-add" data-bs-toggle="tooltip" data-bs-placement="top" title="Add shortcuts"><i class="ti ti-plus text-heading"></i></a>
-                </div>
-              </div>
-              <div class="dropdown-shortcuts-list scrollable-container">
-                <div class="row row-bordered overflow-visible g-0">
-                  <div class="dropdown-shortcuts-item col">
-                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                      <i class="ti ti-calendar ti-26px text-heading"></i>
-                    </span>
-                    <a href="{{url('app/calendar')}}" class="stretched-link">Calendar</a>
-                    <small>Appointments</small>
-                  </div>
-                  <div class="dropdown-shortcuts-item col">
-                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                      <i class="ti ti-file-dollar ti-26px text-heading"></i>
-                    </span>
-                    <a href="{{url('app/invoice/list')}}" class="stretched-link">Invoice App</a>
-                    <small>Manage Accounts</small>
-                  </div>
-                </div>
-                <div class="row row-bordered overflow-visible g-0">
-                  <div class="dropdown-shortcuts-item col">
-                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                      <i class="ti ti-user ti-26px text-heading"></i>
-                    </span>
-                    <a href="{{url('app/user/list')}}" class="stretched-link">User App</a>
-                    <small>Manage Users</small>
-                  </div>
-                  <div class="dropdown-shortcuts-item col">
-                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                      <i class="ti ti-users ti-26px text-heading"></i>
-                    </span>
-                    <a href="{{url('app/access-roles')}}" class="stretched-link">Role Management</a>
-                    <small>Permission</small>
-                  </div>
-                </div>
-                <div class="row row-bordered overflow-visible g-0">
-                  <div class="dropdown-shortcuts-item col">
-                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                      <i class="ti ti-device-desktop-analytics ti-26px text-heading"></i>
-                    </span>
-                    <a href="{{url('/')}}" class="stretched-link">Dashboard</a>
-                    <small>User Dashboard</small>
-                  </div>
-                  <div class="dropdown-shortcuts-item col">
-                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                      <i class="ti ti-settings ti-26px text-heading"></i>
-                    </span>
-                    <a href="{{url('pages/account-settings-account')}}" class="stretched-link">Setting</a>
-                    <small>Account Settings</small>
-                  </div>
-                </div>
-                <div class="row row-bordered overflow-visible g-0">
-                  <div class="dropdown-shortcuts-item col">
-                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                      <i class="ti ti-help ti-26px text-heading"></i>
-                    </span>
-                    <a href="{{url('pages/faq')}}" class="stretched-link">FAQs</a>
-                    <small>FAQs & Articles</small>
-                  </div>
-                  <div class="dropdown-shortcuts-item col">
-                    <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                      <i class="ti ti-square ti-26px text-heading"></i>
-                    </span>
-                    <a href="{{url('modal-examples')}}" class="stretched-link">Modals</a>
-                    <small>Useful Popups</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li> --}}
-          <!-- Quick links -->
 
           <!-- Notification -->
           <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
@@ -442,95 +313,31 @@ $navbarDetached = ($navbarDetached ?? '');
               <li>
                 <div class="dropdown-divider my-1 mx-n2"></div>
               </li>
-              {{-- <li>
-                <a class="dropdown-item" href="{{ Route::has('profile.show') ? route('profile.show') : url('pages/profile-user') }}">
-                  <i class="ti ti-user me-3 ti-md"></i><span class="align-middle">My Profile</span>
-                </a>
-              </li> --}}
 
-              @if (Auth::check() && Laravel\Jetstream\Jetstream::hasApiFeatures())
-                <li>
-                  <a class="dropdown-item" href="{{ route('api-tokens.index') }}">
-                    <i class="ti ti-key ti-md me-3"></i><span class="align-middle">API Tokens</span>
-                  </a>
-                </li>
-              @endif
-              {{-- <li>
-                <a class="dropdown-item" href="{{url('pages/account-settings-billing')}}">
-                  <span class="d-flex align-items-center align-middle">
-                    <i class="flex-shrink-0 ti ti-file-dollar me-3 ti-md"></i><span class="flex-grow-1 align-middle">Billing</span>
-                    <span class="flex-shrink-0 badge bg-danger d-flex align-items-center justify-content-center">4</span>
-                  </span>
-                </a>
-              </li> --}}
-
-              @if (Auth::User() && Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                <li>
-                  <div class="dropdown-divider my-1 mx-n2"></div>
-                </li>
-                <li>
-                  <h6 class="dropdown-header">Manage Team</h6>
-                </li>
-                <li>
-                  <div class="dropdown-divider my-1 mx-n2"></div>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{{ Auth::user() ? route('teams.show', Auth::user()->currentTeam->id) : 'javascript:void(0)' }}">
-                    <i class="ti ti-settings ti-md me-3"></i><span class="align-middle">Team Settings</span>
-                  </a>
-                </li>
-                @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                  <li>
-                    <a class="dropdown-item" href="{{ route('teams.create') }}">
-                      <i class="ti ti-user ti-md me-3"></i><span class="align-middle">Create New Team</span>
-                    </a>
-                  </li>
-                @endcan
-
-                @if (Auth::user()->allTeams()->count() > 1)
-                  <li>
-                    <div class="dropdown-divider my-1 mx-n2"></div>
-                  </li>
-                  <li>
-                    <h6 class="dropdown-header">Switch Teams</h6>
-                  </li>
-                  <li>
-                    <div class="dropdown-divider my-1 mx-n2"></div>
-                  </li>
-                @endif
-
-                @if (Auth::user())
-                  @foreach (Auth::user()->allTeams() as $team)
-                  {{-- Below commented code read by artisan command while installing jetstream. !! Do not remove if you want to use jetstream. --}}
-
-                  {{-- <x-switchable-team :team="$team" /> --}}
-                  @endforeach
-                @endif
-              @endif
+              <!-- Cambiar Contraseña (Ahora primero) -->
               <li>
-                <div class="dropdown-divider my-1 mx-n2"></div>
+                <div class="d-grid px-2 pt-2 pb-1">
+                  <a class="btn btn-sm btn-primary d-flex align-items-center justify-content-center" href="{{ route('password.form') }}">
+                    <i class="ti ti-lock me-2 ti-md"></i>
+                    <small class="align-middle">Cambiar Contraseña</small>
+                  </a>
+                </div>
               </li>
+
+              <!-- Cerrar Sesión (Ahora segundo) -->
               @if (Auth::check())
                 <li>
                   <div class="d-grid px-2 pt-2 pb-1">
-                    <a class="btn btn-sm btn-danger d-flex" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                      <small class="align-middle">Logout</small>
-                      <i class="ti ti-logout ms-2 ti-14px"></i>
+                    <a class="btn btn-sm btn-danger d-flex align-items-center justify-content-center" href="{{ route('logout') }}"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                      <i class="ti ti-logout me-2 ti-md"></i>
+                      <small class="align-middle">Cerrar Sesión</small>
                     </a>
                   </div>
                 </li>
                 <form method="POST" id="logout-form" action="{{ route('logout') }}">
                   @csrf
                 </form>
-              @else
-                <li>
-                  <div class="d-grid px-2 pt-2 pb-1">
-                    <a class="btn btn-sm btn-danger d-flex" href="{{ Route::has('login') ? route('login') : url('auth/login-basic') }}">
-                      <small class="align-middle">Login</small>
-                      <i class="ti ti-login ms-2 ti-14px"></i>
-                    </a>
-                  </div>
-                </li>
               @endif
             </ul>
           </li>
@@ -549,3 +356,13 @@ $navbarDetached = ($navbarDetached ?? '');
     @endif
   </nav>
   <!-- / Navbar -->
+
+  {{-- <style>
+    .bg-navbar-theme {
+      background: linear-gradient(to right, rgba(67, 24, 255, 0.9), rgba(151, 71, 255, 0.8)),
+                  url('{{ asset("assets/img/navbar-bg.jpg") }}') !important;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  </style> --}}

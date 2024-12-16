@@ -8,6 +8,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
+use App\Models\User;
 
 class AccessRoles extends Controller
 {
@@ -33,16 +34,43 @@ class AccessRoles extends Controller
     public function update(Request $request, $id)
     {
         $role = Role::findOrFail($id);
+
+        // Actualizar el nombre del rol
         $role->name = $request->input('name');
         $role->save();
 
-        return response()->json(['status' => 'success', 'message' => 'Rol actualizado correctamente']);
-    }
+        // Sincronizar los permisos
+        if ($request->has('permissions')) {
+            $permissions = $request->input('permissions');
+            $role->syncPermissions($permissions);
+        }
 
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Rol y permisos actualizados correctamente'
+        ]);
+    }
     public function show($id)
     {
-        $role = Role::with('permissions')->findOrFail($id);
-        return response()->json(['status' => 'success', 'data' => $role]);
+        $role = Role::findOrFail($id);
+        $allPermissions = Permission::all();
+
+        $permissions = $allPermissions->map(function($permission) use ($role) {
+            return [
+                'id' => $permission->id,
+                'name' => $permission->name,
+                'assigned' => $role->hasPermissionTo($permission->name)
+            ];
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'id' => $role->id,
+                'name' => $role->name,
+                'permissions' => $permissions
+            ]
+        ]);
     }
 
     public function destroy($id)
@@ -83,6 +111,18 @@ class AccessRoles extends Controller
         });
 
         return response()->json(['data' => $permissions]);
+    }
+
+    public function edit($id)
+    {
+        $user = User::with('roles')->findOrFail($id);
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role_id' => $user->roles->first()->id ?? null,
+            'role' => $user->roles->first()->name ?? null
+        ]);
     }
 
 }

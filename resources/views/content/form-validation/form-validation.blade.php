@@ -31,7 +31,7 @@
                         <div class="row mb-6">
                             <div class="col-12">
                                 <div class="mb-6">
-                                    <label class="form-label" for="nombre-plan">Nombre del Plan de Adquisición</label>
+                                    <label class="form-label" for="nombre-plan"><strong>Nombre del Plan de Adquisición</strong></label>
                                     <input type="text" class="form-control" id="nombre-plan" name="nombrePlan"
                                         placeholder="Ingrese el nombre del plan" required>
                                 </div>
@@ -42,14 +42,14 @@
                         <div class="row mb-6">
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="version">Versión</label>
+                                    <label class="form-label" for="version"><strong>Versión</strong></label>
                                     <input type="number" class="form-control" id="version" name="version" value="1"
                                         readonly>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="payment-mode">Modalidad de Pago</label>
+                                    <label class="form-label" for="payment-mode"><strong>Modalidad de Pago</strong></label>
                                     <select class="form-select select2" id="payment-mode" name="modalidadPago" required>
                                         <option value="">Seleccione Modalidad de Pago</option>
                                         <option value="1">Pago Anticipado</option>
@@ -62,7 +62,7 @@
 
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="budget">Presupuesto</label>
+                                    <label class="form-label" for="budget"><strong>Presupuesto</strong></label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="budget" name="presupuesto"
                                             min="0" placeholder="Monto" required>
@@ -81,7 +81,7 @@
                         <div class="row mb-6">
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="trm">TRM Proyectado</label>
+                                    <label class="form-label" for="trm"><strong>TRM Proyectado</strong></label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
                                         <input type="number" class="form-control" id="trm" name="trm"
@@ -92,7 +92,7 @@
 
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="cdp">CDP</label>
+                                    <label class="form-label" for="cdp"><strong>CDP</strong></label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="cdp" name="cdp"
                                             min="0" placeholder="Número CDP" required>
@@ -104,7 +104,7 @@
 
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="conversion">Conversión a COP</label>
+                                    <label class="form-label" for="conversion"><strong>Conversión a COP</strong></label>
                                     <input type="text" class="form-control" id="conversion" name="conversion"
                                         placeholder="Conversión" readonly pattern="^[A-Za-z0-9]+$" required>
                                 </div>
@@ -116,7 +116,7 @@
                             <div class="col-md-4">
 
                                 <div class="mb-6">
-                                    <label class="form-label" for="unspsc-code">Código UNSPSC</label>
+                                    <label class="form-label" for="unspsc-code"><strong>Código UNSPSC</strong></label>
                                     <select class="form-select select2" id="unspsc-code" name="codigo_unspsc_id[]"
                                         multiple="multiple" required>
                                         <option value="">Seleccione Código</option>
@@ -126,7 +126,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="rp">RP</label>
+                                    <label class="form-label" for="rp"><strong>RP</strong></label>
                                     <input type="text" class="form-control" id="rp" name="rp"
                                         placeholder="Ingrese código RP" pattern="^[A-Za-z0-9]+$" required>
                                 </div>
@@ -134,7 +134,7 @@
 
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="selection-mode">Modalidad de Selección</label>
+                                    <label class="form-label" for="selection-mode"><strong>Modalidad de Selección</strong></label>
                                     <select class="form-select select2" id="selection-mode" name="modalidad_seleccion_id"
                                         required>
                                         <option value="">Seleccione Modalidad</option>
@@ -151,7 +151,7 @@
                         <div class="row mb-6">
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="start-date">Fecha de Inicio (Mes)</label>
+                                    <label class="form-label" for="start-date"><strong>Fecha de Inicio (Mes)</strong></label>
                                     <select class="form-select" id="start-date" name="mes_id" required>
                                         <option value="">Seleccione Mes</option>
                                         @foreach ($meses as $mes)
@@ -163,7 +163,7 @@
 
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="contract-duration">Duración del Contrato</label>
+                                    <label class="form-label" for="contract-duration"><strong>Duración del Contrato</strong></label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="contract-duration"
                                             name="duracionContrato" min="1" placeholder="Duración" required />
@@ -177,7 +177,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="resource-source">Fuente de los Recursos</label>
+                                    <label class="form-label" for="resource-source"><strong>Fuente de los Recursos</strong></label>
                                     <select class="form-select" id="resource-source" name="fuenteRecursos" required>
                                         <option value="Recursos propios">Recursos propios</option>
                                         <option value="Presupuesto nacional">Presupuesto de entidad nacional</option>
@@ -191,8 +191,7 @@
 
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="future-validity">¿Se requieren vigencias
-                                        futuras?</label>
+                                    <label class="form-label" for="future-validity"><strong>¿Se requieren vigencias futuras?</strong></label>
                                     <select class="form-select" id="future-validity" name="vigencia" required>
                                         <option value="1">Sí</option>
                                         <option value="0">No</option>
@@ -205,7 +204,7 @@
                         <div class="row mb-6">
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="future-status">Estado de Solicitud</label>
+                                    <label class="form-label" for="future-status"><strong>Estado de Solicitud</strong></label>
                                     <select class="form-select" id="future-status" name="estado" required>
                                         <option value="1">Aprobada</option>
                                         <option value="0">Pendiente</option>
@@ -215,8 +214,7 @@
 
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="contract-unit">Unidad de Contratación
-                                        (Referencia)</label>
+                                    <label class="form-label" for="contract-unit"><strong>Unidad de Contratación (Referencia)</strong></label>
                                     <select class="form-select select2" id="contract-unit" name="unidadContratacion"
                                         required>
                                         <option value="0">Pendiente</option>
@@ -225,7 +223,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="location">Ubicación</label>
+                                    <label class="form-label" for="location"><strong>Ubicación</strong></label>
                                     <select class="form-select select2" id="location" name="ubicacion_id" required>
                                         <option value="">Seleccione Ubicación</option>
                                         @foreach ($ubicaciones as $ubicacion)
@@ -241,14 +239,14 @@
                         <div class="row mb-6">
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="responsible-name">Nombre del Responsable</label>
+                                    <label class="form-label" for="responsible-name"><strong>Nombre del Responsable</strong></label>
                                     <input type="text" class="form-control" id="responsible-name"
                                         name="nombreResponsable" placeholder="Nombre completo" required />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="responsible-phone">Teléfono del Responsable</label>
+                                    <label class="form-label" for="responsible-phone"><strong>Teléfono del Responsable</strong></label>
                                     <input type="tel" class="form-control" id="responsible-phone"
                                         name="telefonoResponsable" placeholder="Teléfono" pattern="[0-9]+" required />
                                 </div>
@@ -256,7 +254,7 @@
 
                             <div class="col-md-4">
                                 <div class="mb-6">
-                                    <label class="form-label" for="responsible-email">Correo Electrónico</label>
+                                    <label class="form-label" for="responsible-email"><strong>Correo Electrónico</strong></label>
                                     <input type="email" class="form-control" id="responsible-email"
                                         name="emailResponsable" placeholder="Correo electrónico" required />
                                 </div>
@@ -267,7 +265,7 @@
                         <div class="row mb-3">
                             <div class="col-12">
                                 <div class="mb-3">
-                                    <label class="form-label">Documentos Adjuntos</label>
+                                    <label class="form-label"><strong>Documentos Adjuntos</strong></label>
                                     <div class="file-upload-wrapper">
                                         <div class="file-upload-area border rounded p-2 mb-3">
                                             <div class="text-center py-2">
@@ -295,7 +293,7 @@
                         <div class="row mb-6">
                             <div class="col-12">
                                 <div class="mb-6">
-                                    <label class="form-label" for="additional-notes">Notas Adicionales</label>
+                                    <label class="form-label" for="additional-notes"><strong>Notas Adicionales</strong></label>
                                     <textarea class="form-control" id="additional-notes" name="notasAdicionales" rows="3"
                                         placeholder="Ingrese cualquier información adicional relevante"></textarea>
                                 </div>

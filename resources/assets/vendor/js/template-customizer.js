@@ -205,7 +205,8 @@ class TemplateCustomizer {
         )
 
         this._loadStylesheets({
-            [themeUrl]: document.querySelector('.template-customizer-theme-css') }, cb || (() => {}))
+            [themeUrl]: document.querySelector('.template-customizer-theme-css')
+        }, cb || (() => {}))
 
         if (updateStorage) this.settings.onSettingsChange.call(this, this.settings)
     }
@@ -1333,7 +1334,7 @@ TemplateCustomizer.DIRECTIONS = [
 // Theme setting language
 TemplateCustomizer.LANGUAGES = {
   en: {
-    panel_header: 'Template Customizer',
+    panel_header: 'Template Customizerssssssssss',
     panel_sub_header: 'Customize and preview in real time',
     theming_header: 'Theming',
     style_label: 'Style (Mode)',
@@ -1345,45 +1346,7 @@ TemplateCustomizer.LANGUAGES = {
     layout_navbar_label: 'Navbar Type',
     direction_label: 'Direction'
   },
-  fr: {
-    panel_header: 'Modèle De Personnalisation',
-    panel_sub_header: 'Personnalisez et prévisualisez en temps réel',
-    theming_header: 'Thématisation',
-    style_label: 'Style (Mode)',
-    theme_label: 'Thèmes',
-    layout_header: 'Disposition',
-    layout_label: 'Menu (Navigation)',
-    layout_header_label: "Types d'en-tête",
-    content_label: 'Contenu',
-    layout_navbar_label: 'Type de barre de navigation',
-    direction_label: 'Direction'
-  },
-  ar: {
-    panel_header: 'أداة تخصيص القالب',
-    panel_sub_header: 'تخصيص ومعاينة في الوقت الحقيقي',
-    theming_header: 'السمات',
-    style_label: 'النمط (الوضع)',
-    theme_label: 'المواضيع',
-    layout_header: 'تَخطِيط',
-    layout_label: 'القائمة (الملاحة)',
-    layout_header_label: 'أنواع الرأس',
-    content_label: 'محتوى',
-    layout_navbar_label: 'نوع شريط التنقل',
-    direction_label: 'اتجاه'
-  },
-  de: {
-    panel_header: 'Vorlagen-Anpasser',
-    panel_sub_header: 'Anpassen und Vorschau in Echtzeit',
-    theming_header: 'Themen',
-    style_label: 'Stil (Modus)',
-    theme_label: 'Themen',
-    layout_header: 'Layout',
-    layout_label: 'Menü (Navigation)',
-    layout_header_label: 'Header-Typen',
-    content_label: 'Inhalt',
-    layout_navbar_label: 'Art der Navigationsleiste',
-    direction_label: 'Richtung'
-  }
+
 }
 
 window.TemplateCustomizer = TemplateCustomizer

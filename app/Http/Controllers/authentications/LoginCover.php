@@ -57,14 +57,15 @@ class LoginCover extends Controller
 
     if (Auth::attempt($credentials, $request->filled('remember'))) {
       $request->session()->regenerate();
-
       $user = Auth::user();
       $token = $user->createToken('auth_token')->plainTextToken;
-
       return redirect('/dashboard/analytics');
-
     }
-    return redirect('/login');
+
+    return redirect()
+      ->back()
+      ->withErrors(['auth' => 'Las credenciales ingresadas son incorrectas'])
+      ->withInput($request->except('password'));
   }
 
   public function logout(Request $request)

@@ -1,13 +1,13 @@
 {
-    "menu": [
-        {
+    "menu": [{
             "menuHeader": "Inicio",
             "disabled": false
         },
         {
             "name": "Dashboards",
             "icon": "menu-icon tf-icons ti ti-smart-home",
-            "slug": "dashboard"
+            "slug": "/dashboard/analytics",
+            "disabled": false
         },
         {
             "menuHeader": "Modulo Administrador",
@@ -18,26 +18,33 @@
             "icon": "menu-icon tf-icons ti ti-settings",
             "slug": "users",
             "disabled": false,
-            "submenu": [
-                {
+            "submenu": [{
                     "url": "laravel\/user-management",
                     "name": "Crear usuario",
-                    "slug": "users-user-management"
+                    "icon": "menu-icon tf-icons ti ti-user-plus",
+                    "slug": "users-user-management",
+                    "disabled": false
                 },
                 {
                     "url": "app\/access-roles",
                     "name": "Roles",
-                    "slug": "app-access-roles"
+                    "icon": "menu-icon tf-icons ti ti-users",
+                    "slug": "app-access-roles",
+                    "disabled": false
                 },
                 {
                     "url": "app\/access-permission",
                     "name": "Permission",
-                    "slug": "app-access-permission"
+                    "icon": "menu-icon tf-icons ti ti-lock",
+                    "slug": "app-access-permission",
+                    "disabled": false
                 },
                 {
                     "url": "admin\/module-management",
                     "name": "Gesti\u00f3n de M\u00f3dulos",
-                    "slug": "admin-module-management"
+                    "icon": "menu-icon tf-icons ti ti-settings",
+                    "slug": "admin-module-management",
+                    "disabled": false
                 }
             ]
         },
@@ -49,16 +56,20 @@
             "name": "Plan Anual Aquisici\u00f3n",
             "icon": "menu-icon tf-icons ti ti-checkbox",
             "slug": "plan-anual",
-            "submenu": [
-                {
+            "disabled": false,
+            "submenu": [{
                     "url": "form\/validation",
                     "name": "Crear Plan",
-                    "slug": "form-validation"
+                    "icon": "menu-icon tf-icons ti ti-plus",
+                    "slug": "form-validation",
+                    "disabled": false
                 },
                 {
                     "url": "tables\/datatables-advanced",
                     "name": "Planes Creados",
-                    "slug": "tables\/datatables-advanced"
+                    "icon": "menu-icon tf-icons ti ti-list",
+                    "slug": "tables\/datatables-advanced",
+                    "disabled": false
                 }
             ]
         },
@@ -70,7 +81,8 @@
             "name": "Pre-Contractual",
             "icon": "menu-icon tf-icons ti ti-layout-grid",
             "slug": "precontractual",
-            "url": "\/precontractual"
+            "url": "\/precontractual",
+            "disabled": false
         },
         {
             "name": "Test Api SecopII",
@@ -80,7 +92,8 @@
             "disabled": false
         },
         {
-            "menuHeader": "M\u00f3dulo de Contractual"
+            "menuHeader": "M\u00f3dulo de Contractual",
+            "disabled": false
         },
         {
             "name": "Contractual",

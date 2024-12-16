@@ -40,7 +40,14 @@
                         <tbody>
                             @foreach($modules as $module)
                             <tr>
-                                <td>{{ $module['name'] }}</td>
+                                <td>
+                                    <span class="{{ $module['isMainMenu'] ? 'fw-bold' : '' }}">
+                                        @isset($module['icon'])
+                                            <i class="{{ $module['icon'] }} me-2"></i>
+                                        @endisset
+                                        {{ $module['name'] }}
+                                    </span>
+                                </td>
                                 <td>
                                     <span class="badge bg-{{ $module['disabled'] ? 'danger' : 'success' }}">
                                         {{ $module['disabled'] ? 'Deshabilitado' : 'Habilitado' }}
@@ -58,6 +65,37 @@
                                     </div>
                                 </td>
                             </tr>
+                            @if(isset($module['submenu']))
+                                @foreach($module['submenu'] as $submenu)
+                                <tr>
+                                    <td>
+                                        <div class="ps-4">
+                                            <i class="ti ti-corner-down-right me-2"></i>
+                                            @isset($submenu['icon'])
+                                                <i class="{{ $submenu['icon'] }} me-2"></i>
+                                            @endisset
+                                            <span>{{ $submenu['name'] }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ $submenu['disabled'] ? 'danger' : 'success' }}">
+                                            {{ $submenu['disabled'] ? 'Deshabilitado' : 'Habilitado' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input
+                                                class="form-check-input toggle-module"
+                                                type="checkbox"
+                                                data-module="{{ $submenu['name'] }}"
+                                                data-csrf="{{ csrf_token() }}"
+                                                {{ !$submenu['disabled'] ? 'checked' : '' }}
+                                            >
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
                             @endforeach
                         </tbody>
                     </table>

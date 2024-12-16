@@ -68,9 +68,17 @@ $configData = Helper::appClasses();
 
         <form id="formAuthentication" class="mb-6" action="{{ url('login') }}" method="POST">
           @csrf
+
+          {{-- Agregamos el mensaje de error --}}
+          @if($errors->has('auth'))
+          <div class="alert alert-danger mb-3">
+              {{ $errors->first('auth') }}
+          </div>
+          @endif
+
           <div class="mb-6">
             <label for="email" class="form-label">Correo electrónico</label>
-            <input type="text" class="form-control" id="email" name="email-username" placeholder="Ingresa tu correo electrónico" autofocus>
+            <input type="text" class="form-control" id="email" name="email-username" placeholder="Ingresa tu correo electrónico" value="{{ old('email-username') }}" autofocus>
           </div>
           <div class="mb-6 form-password-toggle">
             <label class="form-label" for="password">Contraseña</label>
