@@ -66,18 +66,12 @@
             "url": "/validacion-plan"
         },
         {
-            "name": "Test Api SecopII",
-            "icon": "menu-icon tf-icons ti ti-layout-grid",
-            "slug": "test",
-            "url": "/test"
-        },
-        {
             "menuHeader": "Módulo de Contractual"
         },
         {
             "name": "Contractual",
             "icon": "menu-icon tf-icons ti ti-layout-grid",
-            "slug": "contractual"
+            "slug": "/test"
         }
     ]
 }
