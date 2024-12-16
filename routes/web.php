@@ -38,7 +38,10 @@ use App\Http\Controllers\form_validation\PlanAdquisicionController;
 use App\Http\Controllers\precontractual\PreContractualController;
 use App\Http\Controllers\TestApiSecopIIController;
 use App\Http\Controllers\ModuleManagementController;
+<<<<<<< HEAD
 use App\Http\Controllers\Authentications\PasswordController;
+=======
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
 
 Route::get('/login', [LoginCover::class, 'index'])->name('login');
 Route::post('/login', [LoginCover::class, 'login']);
@@ -118,7 +121,10 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('/admin/module-management', [ModuleManagementController::class, 'index'])->name('admin-module-management');
   Route::post('/admin/module-management/toggle', [ModuleManagementController::class, 'toggleModule']);
+<<<<<<< HEAD
 
   Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm'])->name('password.form');
   Route::post('/change-password', [PasswordController::class, 'changePassword'])->name('password.change');
+=======
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
 });

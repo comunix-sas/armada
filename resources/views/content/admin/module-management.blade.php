@@ -40,6 +40,7 @@
                         <tbody>
                             @foreach($modules as $module)
                             <tr>
+<<<<<<< HEAD
                                 <td>
                                     <span class="{{ $module['isMainMenu'] ? 'fw-bold' : '' }}">
                                         @isset($module['icon'])
@@ -48,6 +49,9 @@
                                         {{ $module['name'] }}
                                     </span>
                                 </td>
+=======
+                                <td>{{ $module['name'] }}</td>
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                                 <td>
                                     <span class="badge bg-{{ $module['disabled'] ? 'danger' : 'success' }}">
                                         {{ $module['disabled'] ? 'Deshabilitado' : 'Habilitado' }}
@@ -65,6 +69,7 @@
                                     </div>
                                 </td>
                             </tr>
+<<<<<<< HEAD
                             @if(isset($module['submenu']))
                                 @foreach($module['submenu'] as $submenu)
                                 <tr>
@@ -96,6 +101,8 @@
                                 </tr>
                                 @endforeach
                             @endif
+=======
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                             @endforeach
                         </tbody>
                     </table>

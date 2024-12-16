@@ -11,6 +11,7 @@ import { glob } from 'glob';
 function GetFilesArray(query) {
     return glob.sync(query);
 }
+
 /**
  * Js Files
  */
