@@ -99,6 +99,7 @@ Route::middleware(['auth'])->group(function () {
 
   Route::get('/precontractual', [PreContractualController::class, 'index'])->name('precontractual.index');
   Route::post('/precontractual', [PreContractualController::class, 'store'])->name('precontractual.store');
+  Route::put('/precontractual/{id}', [PreContractualController::class, 'update'])->name('precontractual.update');
 
   Route::prefix('precontractual')->group(function () {
 
@@ -110,8 +111,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/auditoria/{id}', [PreContractualController::class, 'auditoriaProcess']);
     Route::get('/planes-validacion', [PreContractualController::class, 'obtenerPlanesValidacion']);
   });
-
-  Route::get('/test', [TestApiSecopIIController::class, 'index']);
+  Route::get('/test', [App\Http\Controllers\TestApiSecopIIController::class, 'index'])->name('test');
+  Route::get('/secop', [App\Http\Controllers\TestApiSecopIIController::class, 'getSecopData'])->name('secop.data');
   Route::post('/send-reset-password', [LoginCover::class, 'sendPasswordResetEmail']);
   Route::post('/reset-password', [LoginCover::class, 'resetPassword']);
 

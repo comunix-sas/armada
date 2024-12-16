@@ -6,18 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
+    public function up()
     {
         Schema::create('sgc_precontractual_historial', function (Blueprint $table) {
-            $table->id('idHistorial');
-
-            // Relación con precontractual
+            $table->id();
             $table->unsignedBigInteger('precontractual_id');
-            $table->foreign('precontractual_id')
-                  ->references('idPrecontractual')
-                  ->on('sgc_precontractual')
-                  ->onDelete('cascade');
-
             $table->string('tipo_cambio');
             $table->string('estado_anterior')->nullable();
             $table->string('estado_nuevo');
@@ -25,8 +18,19 @@ return new class extends Migration
             $table->unsignedBigInteger('usuario_id');
             $table->timestamp('fecha_cambio');
             $table->timestamps();
+
+            $table->foreign('precontractual_id')
+                  ->references('idPrecontractual')
+                  ->on('sgc_precontractual')
+                  ->onDelete('cascade');
+
+            $table->foreign('usuario_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
         });
     }
+
 
     public function down(): void
     {

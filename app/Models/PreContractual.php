@@ -29,7 +29,8 @@ class PreContractual extends Model
         'estado_proceso',
         'documento_adjudicacion',
         'created_by',
-        'updated_by'
+        'updated_by',
+        'nota_adicional'
     ];
 
     protected $dates = [
@@ -41,6 +42,33 @@ class PreContractual extends Model
         'fecha_recepcion_ofertas'
     ];
 
+    /**
+     * Obtiene el historial del precontractual
+     */
+    public function historial()
+    {
+        return $this->hasMany(PreContractualHistorial::class, 'precontractual_id', 'idPrecontractual');
+    }
+
+    /**
+     * Obtiene el usuario que creó el registro
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    /**
+     * Obtiene el usuario que actualizó el registro
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    /**
+     * Obtiene el plan de adquisición asociado
+     */
     public function planAdquisicion()
     {
         return $this->belongsTo(PlanAdquisicion::class, 'plan_adquisicion_id', 'idPlan');

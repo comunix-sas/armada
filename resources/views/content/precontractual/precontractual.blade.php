@@ -11,67 +11,10 @@
 @endsection
 
 @section('page-script')
-    @vite(['resources/js/planes-precontractual.js'])
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const estadoEstudio = document.getElementById('estadoEstudio');
-            const notaAdicionalContainer = document.getElementById('notaAdicionalContainer');
-            const notaAdicional = document.getElementById('notaAdicional');
-
-            estadoEstudio.addEventListener('change', function() {
-                if (estadoEstudio.value === 'rechazado') {
-                    notaAdicionalContainer.style.display = 'block';
-                    notaAdicional.setAttribute('required', 'required');
-                } else {
-                    notaAdicionalContainer.style.display = 'none';
-                    notaAdicional.removeAttribute('required');
-                }
-            });
-
-            // Cargar tabla de validación
-            function cargarTablaValidacion() {
-                fetch('/precontractual/planes-validacion')
-                    .then(response => response.json())
-                    .then(data => {
-                        const tbody = document.querySelector('#validacionPlanesTable tbody');
-                        tbody.innerHTML = '';
-
-                        data.data.forEach(plan => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `
-                                <td>${plan.nombrePlan}</td>
-                                <td><span class="badge bg-${getEstadoClass(plan.estado)}">${plan.estado}</span></td>
-                                <td>${plan.fechaInicio}</td>
-                                <td>${plan.ultimaActualizacion}</td>
-                                <td>
-                                    <a href="/storage/${plan.documentoPath}" target="_blank" class="btn btn-sm btn-info">
-                                        <i class="ti ti-file-download"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary" onclick="verDetalles(${plan.id})">
-                                        <i class="ti ti-eye"></i>
-                                    </button>
-                                </td>
-                            `;
-                            tbody.appendChild(tr);
-                        });
-                    });
-            }
-
-            function getEstadoClass(estado) {
-                const classes = {
-                    'pendiente': 'warning',
-                    'en_revision': 'info',
-                    'aprobado': 'success',
-                    'rechazado': 'danger'
-                };
-                return classes[estado] || 'secondary';
-            }
-            cargarTablaValidacion();
-        });
-    </script>
+    @vite(['resources/assets/js/precontractual.js'])
 @endsection
+
+@include('content.precontractual.modal')
 
 @section('content')
     @role('Administrador')
@@ -80,25 +23,42 @@
                 <h5 class="mb-0">Gestión Pre-Contractual</h5>
             </div>
 
+            <!-- Display success message -->
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Display error message -->
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <!-- Display validation errors -->
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <!-- Navegación de pestañas -->
             <ul class="nav nav-tabs nav-fill" role="tablist">
                 <li class="nav-item">
-                    <button
-                        class="nav-link active"
-                        data-bs-toggle="tab"
-                        data-bs-target="#tab-registro"
-                        role="tab"
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-registro" role="tab"
                         aria-selected="true">
                         <i class='ti ti-file-plus me-1'></i>
                         Registro de Planes
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button
-                        class="nav-link"
-                        data-bs-toggle="tab"
-                        data-bs-target="#tab-seguimiento"
-                        role="tab"
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-seguimiento" role="tab"
                         aria-selected="false">
                         <i class='ti ti-timeline me-1'></i>
                         Validación de Planes
@@ -115,13 +75,14 @@
                             <div class="card">
                                 <div class="card-body">
                                     <form id="precontractualForm" class="precontractual-form-validation"
-                                        action="{{ route('precontractual.store') }}" method="POST" enctype="multipart/form-data">
+                                        action="{{ route('precontractual.store') }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         <div class="row mb-3">
                                             <div class="col-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label" for="plan">Seleccionar Plan</label>
-                                                    <select class="form-control" id="plan" name="plan">
+                                                    <label class="form-label" for="planes">Seleccionar Plan</label>
+                                                    <select class="form-control" id="plan" name="planes[]">
                                                         <option value="" disabled selected>Seleccione un plan</option>
                                                         @foreach ($planes as $plan)
                                                             <option value="{{ $plan->idPlan }}">{{ $plan->nombrePlan }}</option>
@@ -140,13 +101,13 @@
                                             <h6>Estudio Previo</h6>
                                             <div class="mb-3">
                                                 <label class="form-label">Documento Estudio Previo</label>
-                                                <input type="file" class="form-control" id="estudioPrevio" />
+                                                <input type="file" class="form-control" id="estudioPrevio" name="estudioPrevio"/>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Estado</label>
-                                                <select class="form-control" id="estadoEstudio">
+                                                <select class="form-control" id="estadoEstudio" name="estadoEstudio">
                                                     <option value="pendiente">Pendiente</option>
-     
+
                                                 </select>
                                             </div>
                                             <div class="mb-3" id="notaAdicionalContainer" style="display: none;">
@@ -171,6 +132,9 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
+                                    <div class="mb-3">
+                                        <input type="text" id="searchField" class="form-control" placeholder="Buscar por nombre del plan..." oninput="cargarTablaValidacion()">
+                                    </div>
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="validacionPlanesTable">
                                             <thead>
@@ -197,7 +161,6 @@
         </div>
 
         <!-- Mantener los modales existentes -->
-        <!-- ... código de los modales ... -->
 
     @else
         <div class="alert alert-danger" role="alert">
