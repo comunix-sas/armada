@@ -61,16 +61,25 @@
                     }
                 @endphp
 
+<<<<<<< HEAD
                 {{-- Menu item --}}
+=======
+                {{-- Si es un elemento de menú --}}
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                 <li class="menu-item {{ $activeClass }} {{ $menu->disabled ?? false ? 'disabled' : '' }}">
                     <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}"
                         class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}"
                         @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif
+<<<<<<< HEAD
                         @if($menu->disabled ?? false) style="pointer-events: none; opacity: 0.6;" @endif>
+=======
+                        @if ($menu->disabled ?? false) disabled @endif>
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                         @isset($menu->icon)
                             <i class="{{ $menu->icon }}"></i>
                         @endisset
                         <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+<<<<<<< HEAD
                     </a>
 
                     {{-- Submenu --}}
@@ -93,6 +102,17 @@
                             @endforeach
                         </ul>
                     @endif
+=======
+                        @isset($menu->badge)
+                            <div class="badge bg-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
+                        @endisset
+                    </a>
+
+                    {{-- Si tiene submenu --}}
+                    @isset($menu->submenu)
+                        @include('layouts.sections.menu.submenu', ['menu' => $menu->submenu])
+                    @endisset
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                 </li>
             @endif
         @endforeach

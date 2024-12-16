@@ -1,5 +1,10 @@
 {
+<<<<<<< HEAD
     "menu": [{
+=======
+    "menu": [
+        {
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
             "menuHeader": "Inicio",
             "disabled": false
         },
@@ -18,7 +23,12 @@
             "icon": "menu-icon tf-icons ti ti-settings",
             "slug": "users",
             "disabled": false,
+<<<<<<< HEAD
             "submenu": [{
+=======
+            "submenu": [
+                {
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                     "url": "laravel\/user-management",
                     "name": "Crear usuario",
                     "icon": "menu-icon tf-icons ti ti-user-plus",
@@ -35,16 +45,24 @@
                 {
                     "url": "app\/access-permission",
                     "name": "Permission",
+<<<<<<< HEAD
                     "icon": "menu-icon tf-icons ti ti-lock",
                     "slug": "app-access-permission",
                     "disabled": false
+=======
+                    "slug": "app-access-permission"
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                 },
                 {
                     "url": "admin\/module-management",
                     "name": "Gesti\u00f3n de M\u00f3dulos",
+<<<<<<< HEAD
                     "icon": "menu-icon tf-icons ti ti-settings",
                     "slug": "admin-module-management",
                     "disabled": false
+=======
+                    "slug": "admin-module-management"
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                 }
             ]
         },
@@ -56,8 +74,13 @@
             "name": "Plan Anual Aquisici\u00f3n",
             "icon": "menu-icon tf-icons ti ti-checkbox",
             "slug": "plan-anual",
+<<<<<<< HEAD
             "disabled": false,
             "submenu": [{
+=======
+            "submenu": [
+                {
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                     "url": "form\/validation",
                     "name": "Crear Plan",
                     "icon": "menu-icon tf-icons ti ti-plus",
@@ -67,9 +90,13 @@
                 {
                     "url": "tables\/datatables-advanced",
                     "name": "Planes Creados",
+<<<<<<< HEAD
                     "icon": "menu-icon tf-icons ti ti-list",
                     "slug": "tables\/datatables-advanced",
                     "disabled": false
+=======
+                    "slug": "tables\/datatables-advanced"
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                 }
             ]
         },
@@ -81,8 +108,12 @@
             "name": "Pre-Contractual",
             "icon": "menu-icon tf-icons ti ti-layout-grid",
             "slug": "precontractual",
+<<<<<<< HEAD
             "url": "\/precontractual",
             "disabled": false
+=======
+            "url": "\/precontractual"
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
         },
         {
             "name": "Test Api SecopII",
@@ -92,8 +123,12 @@
             "disabled": false
         },
         {
+<<<<<<< HEAD
             "menuHeader": "M\u00f3dulo de Contractual",
             "disabled": false
+=======
+            "menuHeader": "M\u00f3dulo de Contractual"
+>>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
         },
         {
             "name": "Contractual",

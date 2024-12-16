@@ -11,6 +11,7 @@ import { glob } from 'glob';
 function GetFilesArray(query) {
     return glob.sync(query);
 }
+
 /**
  * Js Files
  */
@@ -73,5 +74,17 @@ export default defineConfig({
         }),
         html(),
         libsWindowAssignment()
-    ]
+    ],
+    build: {
+        // ... otras configuraciones
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: `
+                        @import "resources/assets/css/test-table.css";
+                    `
+                }
+            }
+        }
+    }
 });
