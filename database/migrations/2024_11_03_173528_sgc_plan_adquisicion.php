@@ -12,8 +12,10 @@ return new class extends Migration
   public function up(): void
   {
     Schema::create('sgc_plan_adquisicion', function (Blueprint $table) {
-
+      // Primary Key
       $table->id('idPlan');
+
+      // Campos de la tabla
       $table->string('nombrePlan');
       $table->string('version');
       $table->integer('modalidadPago');
@@ -23,12 +25,6 @@ return new class extends Migration
       $table->integer('cdp')->nullable();
       $table->decimal('conversion', 15, 2);
       $table->integer('rp');
-      $table->unsignedBigInteger('mes_id');
-      $table->foreign('mes_id')->references('id')->on('sgc_meses');
-      $table->foreignId('modalidad_seleccion_id')->constrained('Sgc_modalidades_seleccion');
-      $table->foreign('ubicacion_id')->references('id')->on('Sgc_ubicaciones');
-      $table->unsignedBigInteger('ubicacion_id');
-
       $table->integer('duracionContrato');
       $table->integer('tipoDuracion');
       $table->string('fuenteRecursos');
@@ -39,6 +35,27 @@ return new class extends Migration
       $table->string('telefonoResponsable');
       $table->string('emailResponsable');
       $table->string('notasAdicionales')->nullable();
+
+      // Relaciones - Foreign Keys
+      $table->unsignedBigInteger('mes_id');
+      $table->foreign('mes_id')
+        ->references('id')
+        ->on('sgc_meses')
+        ->onDelete('cascade');
+
+      $table->unsignedBigInteger('modalidad_seleccion_id');
+      $table->foreign('modalidad_seleccion_id')
+        ->references('id')
+        ->on('sgc_modalidades_seleccion')
+        ->onDelete('cascade');
+
+      $table->unsignedBigInteger('ubicacion_id');
+      $table->foreign('ubicacion_id')
+        ->references('id')
+        ->on('sgc_ubicaciones')
+        ->onDelete('cascade');
+
+      // Timestamps
       $table->timestamps();
     });
   }
