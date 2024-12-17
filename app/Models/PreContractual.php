@@ -30,7 +30,8 @@ class PreContractual extends Model
         'documento_adjudicacion',
         'created_by',
         'updated_by',
-        'nota_adicional'
+        'nota_adicional',
+        
     ];
 
     protected $dates = [
@@ -39,7 +40,8 @@ class PreContractual extends Model
         'fecha_aprobacion_estudio',
         'fecha_notificacion',
         'fecha_publicacion',
-        'fecha_recepcion_ofertas'
+        'fecha_recepcion_ofertas',
+        'estudio_previo_path'
     ];
 
     /**

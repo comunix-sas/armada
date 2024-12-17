@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Storage;
 
 class PreContractualController extends Controller
 {
@@ -80,45 +81,80 @@ class PreContractualController extends Controller
         $planesCreados[] = $preContractual->idPrecontractual;
       }
 
+      return redirect()->route('precontractual.index')
+        ->with('success', 'Planes precontractuales registrados exitosamente');
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      return redirect()->back()
+        ->withErrors($e->errors())
+        ->withInput();
+    } catch (ModelNotFoundException $e) {
+      return redirect()->back()
+        ->with('error', 'Recurso no encontrado');
+    } catch (\Exception $e) {
+      return redirect()->back()
+        ->with('error', 'Error al registrar los planes precontractuales');
+    }
+  }
+  public function obtenerPlanesValidacionId($id)
+  {
+    try {
+      $plan = PreContractual::with([
+        'planAdquisicion',
+        'createdBy',
+        'updatedBy',
+        'historial.usuario'
+      ])->findOrFail($id);
+
+      $documentoPath = $plan->estudio_previo_path;
+        $documentoUrl = null;
+
+      $documentoUrl = $documentoPath ? asset('storage/app/public/' . $documentoPath) : null;
+
+
+      $planFormateado = [
+        'id' => $plan->idPrecontractual,
+        'nombrePlan' => $plan->planAdquisicion ? $plan->planAdquisicion->nombrePlan : 'Plan no encontrado',
+        'estado' => $plan->estado_estudio_previo ?? 'Sin estado',
+        'fechaInicio' => $plan->created_at->format('Y-m-d'),
+        'ultimaActualizacion' => $plan->updated_at->format('Y-m-d'),
+        'documentoUrl' => $documentoUrl,
+        'creadoPor' => $plan->createdBy ? $plan->createdBy->name : 'Usuario no disponible',
+        'actualizadoPor' => $plan->updatedBy ? $plan->updatedBy->name : 'Usuario no disponible',
+        'historial' => $plan->historial->map(function ($registro) {
+          return [
+            'id' => $registro->id,
+            'tipo_cambio' => $registro->tipo_cambio,
+            'estado_anterior' => $registro->estado_anterior,
+            'estado_nuevo' => $registro->estado_nuevo,
+            'comentarios' => $registro->comentarios,
+            'usuario' => $registro->usuario ? $registro->usuario->name : 'Usuario no disponible',
+            'fecha_cambio' => Carbon::parse($registro->fecha_cambio)->format('Y-m-d H:i:s')
+          ];
+        })
+      ];
+
       return response()->json([
         'success' => true,
-        'message' => 'Planes precontractuales registrados exitosamente',
-        'planes' => $planesCreados
+        'data' => $planFormateado
       ]);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Error de validación',
-        'errors' => $e->errors()
-      ], 422);
-    } catch (ModelNotFoundException $e) {
-      return response()->json([
-        'success' => false,
-        'message' => 'Recurso no encontrado'
-      ], 404);
     } catch (\Exception $e) {
       return response()->json([
         'success' => false,
-        'message' => 'Error al registrar los planes precontractuales'
+        'message' => $e->getMessage()
       ], 500);
     }
   }
-
   public function obtenerPlanesValidacion()
   {
     try {
-      if (!Schema::hasTable('sgc_precontractual')) {
-        throw new ModelNotFoundException('La tabla sgc_precontractual no existe');
-      }
-
-      $planes = PreContractual::query()
-        ->with(['planAdquisicion' => function ($query) {
-          $query->select('idPlan', 'nombrePlan');
-        }])
+      $planes = PreContractual::with(['planAdquisicion'])
         ->orderBy('created_at', 'desc')
         ->get();
 
       $planesFormateados = $planes->map(function ($plan) {
+        $documentoPath = $plan->estudio_previo_path;
+        $documentoUrl = $documentoPath ? URL('storage/' . $documentoPath) : null;
         try {
           return [
             'id' => $plan->idPrecontractual,
@@ -126,7 +162,7 @@ class PreContractualController extends Controller
             'estado' => $plan->estado_estudio_previo ?? 'Sin estado',
             'fechaInicio' => optional($plan->created_at)->format('Y-m-d') ?? 'Fecha no disponible',
             'ultimaActualizacion' => optional($plan->updated_at)->format('Y-m-d') ?? 'Fecha no disponible',
-            'documentoPath' => $plan->estudio_previo_path ?? 'Sin documento'
+            'documentoUrl' => $documentoUrl,
           ];
         } catch (\Exception $e) {
           return null;

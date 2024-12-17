@@ -13,10 +13,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
   Route::get('logout', [LoginCover::class, 'logout']);
   Route::post('custom-register', [LoginCover::class, 'register']);
-<<<<<<< HEAD
 });
-=======
->>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
   Route::get('permissions', [AccessPermission::class, 'getPermissions']);
   Route::get('permissions/{id}', [AccessPermission::class, 'show']);
   Route::put('permissions/{id}', [AccessPermission::class, 'update']);
@@ -39,7 +36,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::get('meses', [MesController::class, 'index']);
   Route::get('meses/{id}', [MesController::class, 'show']);
 
-<<<<<<< HEAD
   // Rutas para modalidades de selección
   Route::get('modalidades-seleccion', [ModalidadSeleccionController::class, 'index']);
   Route::get('modalidades-seleccion/{id}', [ModalidadSeleccionController::class, 'show']);
@@ -49,11 +45,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::get('ubicaciones/{id}', [UbicacionesController::class, 'show']);
 
 
-=======
-  Route::get('modalidades-seleccion', [ModalidadSeleccionController::class, 'index']);
-  Route::get('modalidades-seleccion/{id}', [ModalidadSeleccionController::class, 'show']);
-
-  Route::get('ubicaciones', [UbicacionesController::class, 'index']);
-  Route::get('ubicaciones/{id}', [UbicacionesController::class, 'show']);
-});
->>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a

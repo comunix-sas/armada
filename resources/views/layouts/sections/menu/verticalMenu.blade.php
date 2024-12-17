@@ -29,93 +29,82 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-        @foreach ($menuData[0]->menu as $menu)
-            {{-- Si es un encabezado --}}
-            @if (isset($menu->menuHeader))
-                <li class="menu-header small {{ $menu->disabled ?? false ? 'disabled' : '' }}">
-                    <span class="menu-header-text">{{ __($menu->menuHeader) }}</span>
-                </li>
-            @else
-                {{-- active menu method --}}
-                @php
-                    $activeClass = null;
-                    $currentRouteName = Route::currentRouteName();
+        @if(isset($menuData[0]) && isset($menuData[0]->menu))
+            @foreach ($menuData[0]->menu as $menu)
+                {{-- Si es un encabezado --}}
+                @if (isset($menu->menuHeader))
+                    <li class="menu-header small {{ $menu->disabled ?? false ? 'disabled' : '' }}">
+                        <span class="menu-header-text">{{ __($menu->menuHeader) }}</span>
+                    </li>
+                @else
+                    {{-- active menu method --}}
+                    @php
+                        $activeClass = null;
+                        $currentRouteName = Route::currentRouteName();
 
-                    if ($currentRouteName === $menu->slug) {
-                        $activeClass = 'active';
-                    } elseif (isset($menu->submenu)) {
-                        if (gettype($menu->slug) === 'array') {
-                            foreach ($menu->slug as $slug) {
-                                if (str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0) {
+                        if ($currentRouteName === $menu->slug) {
+                            $activeClass = 'active';
+                        } elseif (isset($menu->submenu)) {
+                            if (gettype($menu->slug) === 'array') {
+                                foreach ($menu->slug as $slug) {
+                                    if (str_contains($currentRouteName, $slug) and strpos($currentRouteName, $slug) === 0) {
+                                        $activeClass = 'active open';
+                                    }
+                                }
+                            } else {
+                                if (
+                                    str_contains($currentRouteName, $menu->slug) and
+                                    strpos($currentRouteName, $menu->slug) === 0
+                                ) {
                                     $activeClass = 'active open';
                                 }
                             }
-                        } else {
-                            if (
-                                str_contains($currentRouteName, $menu->slug) and
-                                strpos($currentRouteName, $menu->slug) === 0
-                            ) {
-                                $activeClass = 'active open';
-                            }
                         }
-                    }
-                @endphp
+                    @endphp
 
-<<<<<<< HEAD
-                {{-- Menu item --}}
-=======
-                {{-- Si es un elemento de menú --}}
->>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
-                <li class="menu-item {{ $activeClass }} {{ $menu->disabled ?? false ? 'disabled' : '' }}">
-                    <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}"
-                        class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}"
-                        @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif
-<<<<<<< HEAD
-                        @if($menu->disabled ?? false) style="pointer-events: none; opacity: 0.6;" @endif>
-=======
-                        @if ($menu->disabled ?? false) disabled @endif>
->>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
-                        @isset($menu->icon)
-                            <i class="{{ $menu->icon }}"></i>
-                        @endisset
-                        <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
-<<<<<<< HEAD
-                    </a>
+                    {{-- Menu item --}}
+                    <li class="menu-item {{ $activeClass }} {{ $menu->disabled ?? false ? 'disabled' : '' }}">
+                        <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}"
+                            class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}"
+                            @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif
+                            @if($menu->disabled ?? false) style="pointer-events: none; opacity: 0.6;" @endif>
+                            @isset($menu->icon)
+                                <i class="{{ $menu->icon }}"></i>
+                            @endisset
+                            <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+                        </a>
 
-                    {{-- Submenu --}}
-                    @if(isset($menu->submenu) && !($menu->disabled ?? false))
-                        <ul class="menu-sub">
-                            @foreach ($menu->submenu as $submenu)
-                                @if(!($submenu->disabled ?? false))
-                                    <li class="menu-item {{ $submenu->disabled ?? false ? 'disabled' : '' }}">
-                                        <a href="{{ isset($submenu->url) ? url($submenu->url) : 'javascript:void(0);' }}"
-                                            class="menu-link"
-                                            @if (isset($submenu->target) and !empty($submenu->target)) target="_blank" @endif
-                                            @if($submenu->disabled ?? false) style="pointer-events: none; opacity: 0.6;" @endif>
-                                            @isset($submenu->icon)
-                                                <i class="{{ $submenu->icon }}"></i>
-                                            @endisset
-                                            <div>{{ isset($submenu->name) ? __($submenu->name) : '' }}</div>
-                                        </a>
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ul>
-                    @endif
-=======
-                        @isset($menu->badge)
-                            <div class="badge bg-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
-                        @endisset
-                    </a>
-
-                    {{-- Si tiene submenu --}}
-                    @isset($menu->submenu)
-                        @include('layouts.sections.menu.submenu', ['menu' => $menu->submenu])
-                    @endisset
->>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
-                </li>
-            @endif
-        @endforeach
+                        {{-- Submenu --}}
+                        @if(isset($menu->submenu) && !($menu->disabled ?? false))
+                            <ul class="menu-sub">
+                                @foreach ($menu->submenu as $submenu)
+                                    @if(!($submenu->disabled ?? false))
+                                        <li class="menu-item {{ $submenu->disabled ?? false ? 'disabled' : '' }}">
+                                            <a href="{{ isset($submenu->url) ? url($submenu->url) : 'javascript:void(0);' }}"
+                                                class="menu-link"
+                                                @if (isset($submenu->target) and !empty($submenu->target)) target="_blank" @endif
+                                                @if($submenu->disabled ?? false) style="pointer-events: none; opacity: 0.6;" @endif>
+                                                @isset($submenu->icon)
+                                                    <i class="{{ $submenu->icon }}"></i>
+                                                @endisset
+                                                <div>{{ isset($submenu->name) ? __($submenu->name) : '' }}</div>
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        @endif
+                    </li>
+                @endif
+            @endforeach
+        @else
+            <li class="menu-item">
+                <a href="{{ url('/') }}" class="menu-link">
+                    <i class="ti ti-home"></i>
+                    <div>Inicio</div>
+                </a>
+            </li>
+        @endif
     </ul>
 
     <div class="text-center p-3">

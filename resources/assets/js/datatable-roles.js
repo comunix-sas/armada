@@ -65,10 +65,7 @@ $(function() {
                         }
                     }],
                     language: {
-<<<<<<< HEAD
-=======
                         url: '/js/i18n/es-ES.json',
->>>>>>> 3af5bb94e25c38e132d553ce4754c1aa0976097a
                         search: "Buscar:",
                         lengthMenu: "Mostrar _MENU_ registros por página",
                         zeroRecords: "No se encontraron resultados",
