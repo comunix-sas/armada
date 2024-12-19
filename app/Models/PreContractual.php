@@ -31,6 +31,8 @@ class PreContractual extends Model
         'created_by',
         'updated_by',
         'nota_adicional',
+        'codigoSecop',
+        'url'
         
     ];
 

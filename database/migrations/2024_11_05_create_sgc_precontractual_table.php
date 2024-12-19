@@ -10,16 +10,19 @@ return new class extends Migration
     {
         Schema::create('sgc_precontractual', function (Blueprint $table) {
             $table->id('idPrecontractual');
-
+    
             // Relación con plan de adquisición
             $table->unsignedBigInteger('plan_adquisicion_id');
             $table->foreign('plan_adquisicion_id')
                   ->references('idPlan')
                   ->on('sgc_plan_adquisicion');
-
+    
             // Campos para estudios previos
             $table->string('titulo');
             $table->text('descripcion')->nullable();
+            $table->text('codigoSecop')->nullable();
+            $table->text('url')->nullable();
+
             $table->string('estudio_previo_path')->nullable(); // Ruta del documento
             $table->enum('estado_estudio_previo', [
                 'pendiente',
@@ -28,12 +31,17 @@ return new class extends Migration
                 'rechazado'
             ])->default('pendiente');
             $table->timestamp('fecha_aprobacion_estudio')->nullable();
-
+            
+            // Nuevos campos para estudios previos
+            $table->timestamp('fecha_estudio')->nullable(); // Fecha del estudio
+            $table->string('responsable_estudio')->nullable(); // Responsable del estudio
+            $table->text('comentarios_adicionales')->nullable(); // Comentarios adicionales
+    
             // Campos para proceso de contratación
             $table->string('requerimiento_inicio')->nullable();
             $table->timestamp('fecha_notificacion')->nullable();
             $table->string('proceso_contratacion_id')->nullable();
-
+    
             // Campos SECOP
             $table->enum('secop_estado', [
                 'pendiente',
@@ -43,7 +51,7 @@ return new class extends Migration
             ])->default('pendiente');
             $table->timestamp('fecha_publicacion_secop')->nullable();
             $table->timestamp('fecha_recepcion_ofertas')->nullable();
-
+    
             // Control del proceso
             $table->enum('estado_proceso', [
                 'en_curso',
@@ -51,24 +59,25 @@ return new class extends Migration
                 'cancelado',
                 'desierto'
             ])->default('en_curso');
-
+    
             // Documentos y adjudicación
             $table->string('documento_adjudicacion_path')->nullable();
             $table->decimal('valor_adjudicacion', 15, 2)->nullable();
             $table->string('proveedor_adjudicado')->nullable();
-
+    
             // Auditoría
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes(); // Para mantener historial
-
+    
             // Índices
             $table->index('estado_estudio_previo');
             $table->index('estado_proceso');
             $table->index('secop_estado');
         });
     }
+    
 
     public function down(): void
     {

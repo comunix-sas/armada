@@ -34,21 +34,42 @@ $(function () {
         processing: true,
         data: storedData,
         columns: [
-          { 
-            data: 'fecha_adjudicacion',
-            title: 'Fecha de Adjudicación',
-            render: function(data) {
-              return data ? new Date(data).toLocaleDateString() : '';
-            }
-          },
-          { data: 'fase', title: 'Fase' },
           { data: 'entidad', title: 'Entidad' },
           { data: 'nit_entidad', title: 'NIT Entidad' },
           { data: 'departamento_entidad', title: 'Departamento' },
           { data: 'ciudad_entidad', title: 'Ciudad' },
-          { data: 'nombre_del_procedimiento', title: 'Nombre del Procedimiento' },
-          { data: 'valor_total_adjudicacion', 
-            title: 'Valor Total',
+          { data: 'ordenentidad', title: 'Orden Entidad' },
+          { data: 'codigo_pci', title: 'Código PCI' },
+          { data: 'id_del_proceso', title: 'ID Proceso' },
+          { data: 'referencia_del_proceso', title: 'Referencia' },
+          { data: 'ppi', title: 'PPI' },
+          { data: 'nombre_del_procedimiento', title: 'Nombre Procedimiento' },
+          { data: 'descripci_n_del_procedimiento', title: 'Descripción' },
+          { data: 'fase', title: 'Fase' },
+          { 
+            data: 'fecha_de_publicacion_del',
+            title: 'Fecha Publicación',
+            render: function(data) {
+              return data ? new Date(data).toLocaleDateString() : '';
+            }
+          },
+          { 
+            data: 'precio_base',
+            title: 'Precio Base',
+            render: function(data) {
+              return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP'
+              }).format(data);
+            }
+          },
+          { data: 'modalidad_de_contratacion', title: 'Modalidad' },
+          { data: 'duracion', title: 'Duración' },
+          { data: 'estado_del_procedimiento', title: 'Estado' },
+          { data: 'adjudicado', title: 'Adjudicado' },
+          { 
+            data: 'valor_total_adjudicacion',
+            title: 'Valor Adjudicación',
             render: function(data) {
               return new Intl.NumberFormat('es-CO', {
                 style: 'currency',
@@ -57,41 +78,14 @@ $(function () {
             }
           },
           { data: 'nombre_del_proveedor', title: 'Proveedor' },
+          { data: 'nit_del_proveedor_adjudicado', title: 'NIT Proveedor' },
+          { data: 'tipo_de_contrato', title: 'Tipo Contrato' },
           { 
-            data: 'urlproceso',
-            title: 'Ver Proceso',
+            data: 'urlproceso.url', 
+            title: 'Acciones',
             render: function(data) {
-              return `<a href="${data.url}" target="_blank" class="btn btn-sm btn-primary">Ver</a>`;
+              return `<a href="${data}" target="_blank" class="btn btn-sm btn-primary">Ver</a>`;
             }
-          }
-        ],
-        language: {
-          url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
-        },
-        responsive: true,
-        dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-        buttons: [
-          {
-            extend: 'collection',
-            className: 'btn btn-label-primary dropdown-toggle me-2',
-            text: '<i class="ti ti-file-export me-sm-1"></i> <span class="d-none d-sm-inline-block">Exportar</span>',
-            buttons: [
-              {
-                extend: 'excel',
-                text: '<i class="ti ti-file-spreadsheet me-1"></i>Excel',
-                className: 'dropdown-item'
-              },
-              {
-                extend: 'pdf',
-                text: '<i class="ti ti-file-description me-1"></i>PDF',
-                className: 'dropdown-item'
-              },
-              {
-                extend: 'print',
-                text: '<i class="ti ti-printer me-1"></i>Imprimir',
-                className: 'dropdown-item'
-              }
-            ]
           }
         ]
       });

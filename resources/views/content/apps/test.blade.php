@@ -54,8 +54,8 @@
     </div>
     <div class="card-datatable table-responsive">
         <table class="datatables-secop table border-top">
-            <thead>
-                <tr>
+                <thead>
+                  <tr>
                     <th>Entidad</th>
                     <th>NIT Entidad</th>
                     <th>Departamento</th>
@@ -79,8 +79,10 @@
                     <th>NIT Proveedor</th>
                     <th>Tipo Contrato</th>
                     <th>Acciones</th>
-                </tr>
-            </thead>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              
         </table>
     </div>
 </div>

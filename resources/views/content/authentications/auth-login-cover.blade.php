@@ -11,7 +11,7 @@ $configData = Helper::appClasses();
 @section('vendor-style')
 @vite([
 'resources/css/app.scss', {{-- SCSS principal --}}
-'resources/assets/vendor/libs/@form-validation/form-validation.scss' {{-- Validación de formularios --}}
+// 'resources/assets/vendor/libs/@form-validation/form-validation.scss' {{-- Validación de formularios --}}
 ])
 @endsection
 

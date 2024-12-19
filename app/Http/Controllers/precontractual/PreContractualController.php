@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\Models\PreContractualHistorial;
+use Carbon\Carbon;
 
 class PreContractualController extends Controller
 {
@@ -90,6 +91,9 @@ class PreContractualController extends Controller
   
           // Actualizar el precontractual
           $preContractual->estado_estudio_previo = $request->estadoEstudio;
+          $preContractual->url = $request->url;
+          $preContractual->codigoSecop = $request->codigoSecop;
+
           $preContractual->updated_by = Auth::id();
           $preContractual->save();
   
@@ -213,6 +217,9 @@ class PreContractualController extends Controller
         'estado' => $plan->estado_estudio_previo ?? 'Sin estado',
         'fechaInicio' => $plan->created_at->format('Y-m-d'),
         'ultimaActualizacion' => $plan->updated_at->format('Y-m-d'),
+        'ultimaActualizacion' => $plan->updated_at->format('Y-m-d'),
+        'ulr' => $plan->url,
+        'codigoSecop' => $plan->codigoSecop,
         'documentoUrl' => $documentoUrl,
         'creadoPor' => $plan->createdBy ? $plan->createdBy->name : 'Usuario no disponible',
         'actualizadoPor' => $plan->updatedBy ? $plan->updatedBy->name : 'Usuario no disponible',

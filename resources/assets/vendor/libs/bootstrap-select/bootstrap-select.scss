@@ -5,6 +5,11 @@
 @use '../../scss/_bootstrap-extended/include-dark' as dark;
 @import '../../scss/_custom-variables/libs';
 @import 'bootstrap-select/sass/bootstrap-select.scss';
+/* Personalización del tamaño del modal */
+.modal-custom {
+  max-width: 80%; /* Ajusta el ancho al 80% del contenedor */
+  width: 130%; /* Define un tamaño fijo si es necesario */
+}
 
 // Common Styles
 .bootstrap-select *,
