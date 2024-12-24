@@ -56,44 +56,24 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/css/app.css',
-                'resources/assets/css/demo.css',
+                'resources/css/app.scss',
                 'resources/js/app.js',
-                ...pageJsFiles,
-                ...vendorJsFiles,
-                ...LibsJsFiles,
-                'resources/js/laravel-user-management.js', // Processing Laravel User Management CRUD JS File
-                'resources/js/planes-precontractual.js',
-                'resources/js/pages/auth/reset-password.js',
-                ...CoreScssFiles,
-                ...LibsScssFiles,
-                ...LibsCssFiles,
-                ...FontsScssFiles,
-                'resources/css/app.scss',           // Principal CSS/SCSS
-                'resources/js/app.js',              // Principal JS
-                'resources/assets/css/demo.css',    // Otros archivos CSS
+                'resources/assets/css/demo.css',
                 'resources/js/laravel-user-management.js',
                 'resources/js/planes-precontractual.js',
-                'resources/js/pages/auth/reset-password.js',
-                'resources\assets\vendor\libs\@form-validation\popular.js',
-                'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
-                'resources/assets/vendor/libs/@form-validation/auto-focus.js'
+                'resources/js/pages/auth/reset-password.js'
             ],
             refresh: true
-        }),
-        html(),
-        libsWindowAssignment()
+        })
     ],
     build: {
         // ... otras configuraciones
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: `
-                        @import "resources/assets/css/test-table.css";
-                    `
+                    additionalData: `@import "resources/assets/css/test-table.css";`
                 }
             }
         }
     }
-});
+});    
